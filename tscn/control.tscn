@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://duwro0tyil0c0"]
+
+[ext_resource type="Script" uid="uid://cxjtet0evquyk" path="res://scripts/auth/AuthMenu.cs" id="1_vpxtf"]
+
+[node name="AuthMenu" type="Control" unique_id=188952310 node_paths=PackedStringArray("_loginPanel", "_signUpPanel", "_loginEmail", "_loginPassword", "_logInButton", "_goToSignUpButton", "_signUpEmail", "_signUpPassword", "_signUpButton", "_goToLoginButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vpxtf")
+_loginPanel = NodePath("CenterContainer/LoginPanel")
+_signUpPanel = NodePath("CenterContainer/SignUpPanel")
+_loginEmail = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/Username")
+_loginPassword = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/Password")
+_logInButton = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/Button")
+_goToSignUpButton = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/LinkButton")
+_signUpEmail = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/Username")
+_signUpPassword = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/Password")
+_signUpButton = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/Button")
+_goToLoginButton = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/LinkButton")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1618382338]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.54, 0.4176, 0.35639998, 1)
+
+[node name="Client" type="Node" parent="." unique_id=1819621855]
+
+[node name="Server" type="Node" parent="." unique_id=1796683162]
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=863137309]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SignUpPanel" type="Panel" parent="CenterContainer" unique_id=1268224116]
+oversampling_with_scale = 2
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/SignUpPanel" unique_id=1553827181]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/SignUpPanel/MarginContainer" unique_id=1411816436]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=94577393]
+layout_mode = 2
+text = "Sign up"
+
+[node name="Username" type="LineEdit" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=1611800295]
+layout_mode = 2
+placeholder_text = "Username"
+
+[node name="Password" type="LineEdit" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=2060696554]
+layout_mode = 2
+placeholder_text = "password"
+
+[node name="Button" type="Button" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=375457212]
+layout_mode = 2
+text = "Sign up"
+
+[node name="LinkButton" type="LinkButton" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=1281156825]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Go to sign up instead"
+theme_override_colors/font_hover_color = Color(0.20005463, 0.14627455, 0.12135206, 1)
+theme_override_font_sizes/font_size = 12
+text = "Go to login instead"
+
+[node name="LoginPanel" type="Panel" parent="CenterContainer" unique_id=1130475559]
+visible = false
+oversampling_with_scale = 2
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/LoginPanel" unique_id=588132564]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer" unique_id=887303712]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=1871673384]
+layout_mode = 2
+text = "Log in"
+
+[node name="Username" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=155149272]
+layout_mode = 2
+placeholder_text = "Username"
+
+[node name="Password" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=1490031691]
+layout_mode = 2
+placeholder_text = "password"
+
+[node name="Button" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=354584139]
+layout_mode = 2
+text = "Log in"
+
+[node name="LinkButton" type="LinkButton" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=906186806]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Go to sign up instead"
+theme_override_colors/font_hover_color = Color(0.20005463, 0.14627455, 0.12135206, 1)
+theme_override_font_sizes/font_size = 12
+text = "Go to sign up instead"
