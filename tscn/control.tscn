@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cxjtet0evquyk" path="res://scripts/auth/AuthMenu.cs" id="1_vpxtf"]
 
-[node name="AuthMenu" type="Control" unique_id=188952310 node_paths=PackedStringArray("_loginPanel", "_signUpPanel", "_loginEmail", "_loginPassword", "_logInButton", "_goToSignUpButton", "_signUpEmail", "_signUpPassword", "_signUpButton", "_goToLoginButton")]
+[node name="AuthMenu" type="Control" unique_id=188952310 node_paths=PackedStringArray("_loginPanel", "_signUpPanel", "_loginEmail", "_loginPassword", "_logInButton", "_loginEmailErrorLabel", "_loginPasswordErrorLabel", "_goToSignUpButton", "_signUpEmail", "_signUpPassword", "_signUpButton", "_signUpEmailErrorLabel", "_signUpPasswordErrorLabel", "_goToLoginButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,13 +12,17 @@ grow_vertical = 2
 script = ExtResource("1_vpxtf")
 _loginPanel = NodePath("CenterContainer/LoginPanel")
 _signUpPanel = NodePath("CenterContainer/SignUpPanel")
-_loginEmail = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/Username")
-_loginPassword = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/Password")
+_loginEmail = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Username")
+_loginPassword = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/Password")
 _logInButton = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/Button")
+_loginEmailErrorLabel = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/UsernameError")
+_loginPasswordErrorLabel = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/PasswordError")
 _goToSignUpButton = NodePath("CenterContainer/LoginPanel/MarginContainer/VBoxContainer/LinkButton")
-_signUpEmail = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/Username")
-_signUpPassword = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/Password")
+_signUpEmail = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Username")
+_signUpPassword = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/Password")
 _signUpButton = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/Button")
+_signUpEmailErrorLabel = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/UsernameError")
+_signUpPasswordErrorLabel = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/PasswordError")
 _goToLoginButton = NodePath("CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/LinkButton")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1618382338]
@@ -43,6 +47,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SignUpPanel" type="Panel" parent="CenterContainer" unique_id=1268224116]
+visible = false
 oversampling_with_scale = 2
 layout_mode = 2
 
@@ -69,13 +74,45 @@ theme_override_constants/separation = 10
 layout_mode = 2
 text = "Sign up"
 
-[node name="Username" type="LineEdit" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=1611800295]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=877231876]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=324442288]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="Username" type="LineEdit" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1611800295]
 layout_mode = 2
 placeholder_text = "Username"
 
-[node name="Password" type="LineEdit" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=2060696554]
+[node name="UsernameError" type="Label" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=660425439]
 layout_mode = 2
-placeholder_text = "password"
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.7739887, 0, 0.0029136431, 1)
+theme_override_font_sizes/font_size = 10
+
+[node name="MarginContainer2" type="MarginContainer" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=1323921997]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer2" unique_id=1821942249]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="Password" type="LineEdit" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer" unique_id=931250487]
+layout_mode = 2
+placeholder_text = "Password"
+
+[node name="PasswordError" type="Label" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer" unique_id=316997488]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.77254903, 0, 0.003921569, 1)
+theme_override_font_sizes/font_size = 10
 
 [node name="Button" type="Button" parent="CenterContainer/SignUpPanel/MarginContainer/VBoxContainer" unique_id=375457212]
 layout_mode = 2
@@ -89,12 +126,11 @@ theme_override_colors/font_hover_color = Color(0.20005463, 0.14627455, 0.1213520
 theme_override_font_sizes/font_size = 12
 text = "Go to login instead"
 
-[node name="LoginPanel" type="Panel" parent="CenterContainer" unique_id=1130475559]
-visible = false
+[node name="LoginPanel" type="Panel" parent="CenterContainer" unique_id=80080280]
 oversampling_with_scale = 2
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/LoginPanel" unique_id=588132564]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/LoginPanel" unique_id=931193788]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -106,30 +142,62 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer" unique_id=887303712]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer" unique_id=367788671]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=1871673384]
+[node name="Label" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=2098874457]
 layout_mode = 2
-text = "Log in"
+text = "Login"
 
-[node name="Username" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=155149272]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=956224202]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=2078119324]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="Username" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1629609363]
 layout_mode = 2
 placeholder_text = "Username"
 
-[node name="Password" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=1490031691]
+[node name="UsernameError" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1053240536]
 layout_mode = 2
-placeholder_text = "password"
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.7739887, 0, 0.0029136431, 1)
+theme_override_font_sizes/font_size = 10
 
-[node name="Button" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=354584139]
+[node name="MarginContainer2" type="MarginContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=524052561]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer2" unique_id=1733839691]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="Password" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer" unique_id=1793151841]
+layout_mode = 2
+placeholder_text = "Password"
+
+[node name="PasswordError" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer" unique_id=158975955]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.77254903, 0, 0.003921569, 1)
+theme_override_font_sizes/font_size = 10
+
+[node name="Button" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=884090551]
 layout_mode = 2
 text = "Log in"
 
-[node name="LinkButton" type="LinkButton" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=906186806]
+[node name="LinkButton" type="LinkButton" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=271604411]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Go to sign up instead"

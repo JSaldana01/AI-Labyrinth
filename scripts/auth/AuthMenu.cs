@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 using Supabase;
 
 public partial class AuthMenu : Control
@@ -10,14 +11,17 @@ public partial class AuthMenu : Control
 	[Export] private LineEdit _loginEmail;
 	[Export] private LineEdit _loginPassword;
 	[Export] private Button _logInButton;
+	[Export] private Label _loginEmailErrorLabel;
+	[Export] private Label _loginPasswordErrorLabel;
 	[Export] private LinkButton _goToSignUpButton;
 	
 	[Export] private LineEdit _signUpEmail;
 	[Export] private LineEdit _signUpPassword;
 	[Export] private Button _signUpButton;
+	[Export] private Label _signUpEmailErrorLabel;
+	[Export] private Label _signUpPasswordErrorLabel;
 	[Export] private LinkButton _goToLoginButton;
 
-	private Client _supabase;
 	private AuthValidator _validator = new AuthValidator();
 	
 	// Called when the node enters the scene tree for the first time.
@@ -29,10 +33,6 @@ public partial class AuthMenu : Control
 		_goToLoginButton.Pressed += OnGoToLoginButtonPressed;
 		
 		ShowLoginPanel();
-		
-		// URL and ENV_KEY will be added later when I learn about environment variables :)
-		_supabase = new Client("URL", "ENV_KEY", new SupabaseOptions());
-		await _supabase.InitializeAsync();
 	}
 
 	private void ShowLoginPanel()
@@ -67,19 +67,25 @@ public partial class AuthMenu : Control
 		
 		var result = _validator.Validate(data);
 
+		// Simple validation, return if invalid
 		if (!result.IsValid)
+		{
+			_loginEmailErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Email").ErrorMessage;
+			_loginPasswordErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Password").ErrorMessage;
 			return;
+		}
 		
-		_signUpButton.Disabled = true;
-
+		_loginEmailErrorLabel.Text = "";
+		_loginPasswordErrorLabel.Text = "";
+		
 		try
 		{
-			var session = await _supabase.Auth.SignUp(data.Email, data.Password);
+			// Session if its needed
+			_ = await DBManager.Supabase.Auth.SignIn(data.Email, data.Password);
 		}
 		catch (Exception e)
 		{
-			Console.WriteLine(e);
-			throw;
+			GD.PrintErr($"Login Failed: {e.Message}");
 		}
 	}
 
