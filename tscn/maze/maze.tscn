@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://m4ua1t0u4sf1"]
 
 [ext_resource type="PackedScene" uid="uid://xdreshbgv5kt" path="res://tscn/player.tscn" id="1_6aav3"]
+[ext_resource type="Script" path="res://scripts/maze/maze_generator.gd" id="2_maze_gen"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qnmab"]
+size = Vector2(24, 24)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qnmab"]
-size = Vector3(20.39058, 1, 20.820724)
+size = Vector3(24, 1, 24)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 
@@ -19,6 +21,7 @@ ambient_light_source = 3
 ambient_light_energy = 0.5
 
 [node name="Maze" type="Node3D" unique_id=523531026]
+script = ExtResource("2_maze_gen")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1")
@@ -30,12 +33,14 @@ shadow_enabled = true
 [node name="Floor" type="StaticBody3D" parent="." unique_id=778562776]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=777312482]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 12)
 mesh = SubResource("PlaneMesh_qnmab")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1147725756]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10778046, 0, 0.32868195)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -0.5, 12)
 shape = SubResource("BoxShape3D_qnmab")
 
+[node name="Walls" type="Node3D" parent="."]
+
 [node name="Player" parent="." unique_id=695747154 instance=ExtResource("1_6aav3")]
-transform = Transform3D(0.99994254, -0.010717815, 0, 0.010717815, 0.99994254, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2)
