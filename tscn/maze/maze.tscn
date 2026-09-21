@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://m4ua1t0u4sf1"]
+
+[ext_resource type="PackedScene" uid="uid://xdreshbgv5kt" path="res://tscn/player.tscn" id="1_6aav3"]
+[ext_resource type="Script" path="res://scripts/maze/maze_generator.gd" id="2_maze_gen"]
+[ext_resource type="PackedScene" path="res://tscn/ui/hud.tscn" id="3_hud"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_qnmab"]
+size = Vector2(24, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnmab"]
+size = Vector3(24, 1, 24)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("ProceduralSkyMaterial_1")
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 3
+ambient_light_energy = 0.5
+
+[node name="Maze" type="Node3D" unique_id=523531026]
+script = ExtResource("2_maze_gen")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-45, -45, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=778562776]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=777312482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 12)
+mesh = SubResource("PlaneMesh_qnmab")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1147725756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -0.5, 12)
+shape = SubResource("BoxShape3D_qnmab")
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="ForkTriggers" type="Node3D" parent="."]
+
+[node name="Exit" type="Node3D" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+
+[node name="Player" parent="." unique_id=695747154 instance=ExtResource("1_6aav3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2)
