@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/maze/exit_gate.gd" id="1_exit"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_exit"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_exit"]
+albedo_color = Color(1, 0.84, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.84, 0, 1)
+emission_energy_multiplier = 1.5
+
+[node name="ExitGate" type="Area3D"]
+script = ExtResource("1_exit")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_exit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_exit")
+surface_material_override/0 = SubResource("StandardMaterial3D_exit")

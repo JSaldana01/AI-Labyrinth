@@ -75,8 +75,8 @@ public partial class AuthMenu : Control
 		// Simple validation, return if invalid
 		if (!result.IsValid)
 		{
-			_loginEmailErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Email")?.ErrorMessage;
-			_loginPasswordErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Password")?.ErrorMessage;
+			_loginEmailErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Email").ErrorMessage;
+			_loginPasswordErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Password").ErrorMessage;
 			return;
 		}
 		
@@ -103,32 +103,7 @@ public partial class AuthMenu : Control
 
 	private async void OnSignUpButtonPressed()
 	{
-		var data = new AuthData
-		{
-			Email = _signUpEmail.Text,
-			Password = _signUpPassword.Text
-		};
 		
-		var res = _validator.Validate(data);
-
-		if (!res.IsValid)
-		{
-			_signUpEmailErrorLabel.Text = res.Errors.FirstOrDefault(e => e.PropertyName == "Email")?.ErrorMessage;
-			_signUpPasswordErrorLabel.Text = res.Errors.FirstOrDefault(e => e.PropertyName == "Password")?.ErrorMessage;
-			return;
-		}
-		
-		_signUpEmailErrorLabel.Text = "";
-		_signUpPasswordErrorLabel.Text = "";
-
-		try
-		{
-			_ = await DBManager.Supabase.Auth.SignUp(data.Email, data.Password);
-		}
-		catch (Exception e)
-		{
-			GD.PrintErr($"Sign Up Failed: {e.Message}");
-		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
