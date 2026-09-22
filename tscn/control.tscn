@@ -206,6 +206,6 @@ theme_override_colors/font_hover_color = Color(0.20005463, 0.14627455, 0.1213520
 theme_override_font_sizes/font_size = 12
 text = "Go to sign up instead"
 
-[node name="TestLoginButton" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
+[node name="TestLoginButton" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=175695173]
 layout_mode = 2
 text = "Skip Login (Test)"

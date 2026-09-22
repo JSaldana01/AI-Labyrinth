@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Linq;
 using Supabase;
+using Supabase.Gotrue.Exceptions;
 
 public partial class AuthMenu : Control
 {
@@ -29,7 +30,7 @@ public partial class AuthMenu : Control
 	private AuthValidator _validator = new AuthValidator();
 	
 	// Called when the node enters the scene tree for the first time.
-	public override async void _Ready()
+	public override void _Ready()
 	{
 		_logInButton.Pressed += OnLoginButtonPressed;
 		_signUpButton.Pressed += OnSignUpButtonPressed;
@@ -75,8 +76,8 @@ public partial class AuthMenu : Control
 		// Simple validation, return if invalid
 		if (!result.IsValid)
 		{
-			_loginEmailErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Email").ErrorMessage;
-			_loginPasswordErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Password").ErrorMessage;
+			_loginEmailErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Email")?.ErrorMessage;
+			_loginPasswordErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Password")?.ErrorMessage;
 			return;
 		}
 		
@@ -86,7 +87,8 @@ public partial class AuthMenu : Control
 		try
 		{
 			// Session if its needed
-			_ = await DBManager.Supabase.Auth.SignIn(data.Email, data.Password);
+			var login = await DBManager.Supabase.Auth.SignIn(data.Email, data.Password);
+			GD.Print(login);
 			GetTree().ChangeSceneToFile(MazeScenePath);
 		}
 		catch (Exception e)
@@ -103,7 +105,40 @@ public partial class AuthMenu : Control
 
 	private async void OnSignUpButtonPressed()
 	{
+		var data = new AuthData
+		{
+			Email = _signUpEmail.Text,
+			Password = _signUpPassword.Text
+		};
 		
+		var result = _validator.Validate(data);
+
+		// Make sure validator for email and password are the first checks done and returned if invalid
+		if (!result.IsValid)
+		{
+			_signUpEmailErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Email")?.ErrorMessage;
+			_signUpPasswordErrorLabel.Text = result.Errors.FirstOrDefault(e => e.PropertyName == "Password")?.ErrorMessage;
+			GD.PrintErr($"Sign Up Failed: {result.Errors.FirstOrDefault(e => e.PropertyName == "Email")?.ErrorMessage}" +  result.Errors.FirstOrDefault(e => e.PropertyName == "Password")?.ErrorMessage);
+			return;
+		}
+		
+		// Sign up went good
+		_signUpEmailErrorLabel.Text = "";
+		_signUpPasswordErrorLabel.Text = "";
+
+
+		try
+		{
+			var res = await DBManager.Supabase.Auth.SignUp(data.Email, data.Password);
+			GD.Print(res);
+			GetTree().ChangeSceneToFile(MazeScenePath);
+		}
+		catch (GotrueException e)
+		{
+			Console.WriteLine("User already exists! Full exception:");
+			Console.WriteLine(e);
+			throw;
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
