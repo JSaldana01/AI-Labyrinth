@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/maze/fork_trigger.gd" id="1_fork"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fork"]
+size = Vector3(1, 1, 1)
+
+[node name="ForkTrigger" type="Area3D"]
+script = ExtResource("1_fork")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_fork")
