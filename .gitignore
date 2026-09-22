@@ -3,3 +3,4 @@
 /android/
 .idea/
 *.sln.DotSettings.user
+.env
