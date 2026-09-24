@@ -4,6 +4,4 @@
 .idea/
 *.sln.DotSettings.user
 .env
-/build/*
-!/build/3311.exe
 export_presets.cfg
