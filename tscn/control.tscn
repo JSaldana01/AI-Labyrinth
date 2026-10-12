@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://duwro0tyil0c0"]
 
 [ext_resource type="Script" uid="uid://cxjtet0evquyk" path="res://scripts/auth/AuthMenu.cs" id="1_vpxtf"]
+[ext_resource type="Texture2D" uid="uid://pxmrh1wmfa1v" path="res://scripts/ui/assets/images/background-image.png" id="2_y35ns"]
 
 [node name="AuthMenu" type="Control" unique_id=188952310 node_paths=PackedStringArray("_loginPanel", "_signUpPanel", "_loginEmail", "_loginPassword", "_logInButton", "_loginEmailErrorLabel", "_loginPasswordErrorLabel", "_goToSignUpButton", "_signUpEmail", "_signUpPassword", "_signUpButton", "_signUpEmailErrorLabel", "_signUpPasswordErrorLabel", "_goToLoginButton", "_testLoginButton")]
 layout_mode = 3
@@ -34,6 +35,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.54, 0.4176, 0.35639998, 1)
+
+[node name="BackgroundImage" type="Sprite2D" parent="." unique_id=1466386330]
+position = Vector2(575, 331)
+scale = Vector2(0.7873804, 0.703374)
+texture = ExtResource("2_y35ns")
 
 [node name="Client" type="Node" parent="." unique_id=1819621855]
 

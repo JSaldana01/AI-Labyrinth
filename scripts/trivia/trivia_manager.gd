@@ -8,12 +8,13 @@ signal answered(was_correct: bool)
 const POPUP_SCENE: PackedScene = preload("res://tscn/trivia/trivia_popup.tscn")
 
 const QUESTIONS: Array[Dictionary] = [
-	{"question": "What is the capital of France?", "choices": ["Paris", "London", "Rome", "Berlin"], "correct": 0},
-	{"question": "What is 7 x 8?", "choices": ["54", "56", "62", "64"], "correct": 1},
-	{"question": "Which planet is known as the Red Planet?", "choices": ["Venus", "Jupiter", "Mars", "Saturn"], "correct": 2},
-	{"question": "How many continents are there on Earth?", "choices": ["5", "6", "7", "8"], "correct": 2},
-	{"question": "What is the largest ocean on Earth?", "choices": ["Atlantic", "Indian", "Arctic", "Pacific"], "correct": 3},
-	{"question": "In what year did World War II end?", "choices": ["1943", "1944", "1945", "1946"], "correct": 2},
+	{"question": "Which lecturer is also an advisor?", "choices": ["Christoph Csallner", "Donna French", "Chenxi Wang", "Marika Apostolova"], "correct": 1},
+	{"question": "How many bits are in a byte?", "choices": ["4", "8", "16", "32"], "correct": 1},
+	{"question": "Which building is the Science and Engineering Library in?", "choices": ["Nedderman Hall", "Engineering Research Building", "SEIR", "Central Library"], "correct": 0},
+	{"question": "Out of the following companies, which is not considered a FAANG company?", "choices": ["Meta", "Amazon", "Nvidia", "Google"], "correct": 2},
+	{"question": "Which of the below is not a current CSE undergraduate advisor?", "choices": ["Katy Gonzalez", "Melinda Rose", "Katie MacKenzie", "Ryanne Johnson"], "correct": 1},
+	{"question": "What year was UTA founded?", "choices": ["1870", "1885", "1895", "1909"], "correct": 2},
+	{"question": "Which UTA building houses the undergraduate CSE advisors?", "choices": ["Nedderman Hall", "Engineering Research Building", "SEIR", "Central Library"], "correct": 1},
 ]
 
 var _popup: Control
