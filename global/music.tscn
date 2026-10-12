@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dssfc3op8030s"]
+
+[ext_resource type="AudioStream" uid="uid://bd40puwxtk1r6" path="res://scripts/ui/assets/sounds/Hidden-in-Havana.mp3" id="1_1k5wo"]
+
+[node name="Music" type="AudioStreamPlayer" unique_id=1194847676]
+stream = ExtResource("1_1k5wo")
+autoplay = true
