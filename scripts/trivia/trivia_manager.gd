@@ -15,6 +15,14 @@ const QUESTIONS: Array[Dictionary] = [
 	{"question": "Which of the below is not a current CSE undergraduate advisor?", "choices": ["Katy Gonzalez", "Melinda Rose", "Katie MacKenzie", "Ryanne Johnson"], "correct": 1},
 	{"question": "What year was UTA founded?", "choices": ["1870", "1885", "1895", "1909"], "correct": 2},
 	{"question": "Which UTA building houses the undergraduate CSE advisors?", "choices": ["Nedderman Hall", "Engineering Research Building", "SEIR", "Central Library"], "correct": 1},
+	{"question": "Which programming language is primarily used for Godot Engine scripting?", "choices": ["C#", "GDScript", "Python", "JavaScript"], "correct": 1},
+	{"question": "What does HTML stand for?", "choices": ["HyperText Markup Language", "HighText Machine Language", "HyperText Markdown Language", "HyperTool Multi Language"], "correct": 0},
+	{"question": "Which of the following does not exist in GitHub?", "choices": ["Repositories", "Issues", "Pull Requests", "Branches", "Widgets"], "correct": 4},
+	{"question": "Which version control system is commonly used with GitHub?", "choices": ["Subversion", "Mercurial", "Git", "CVS"], "correct": 2},
+	{"question": "What is the main programming language taught in CSE 1310?", "choices": ["C", "C++", "Python", "Java"], "correct": 0},
+	{"question": "Which of the following is a front-end web development framework?", "choices": ["Django", "React", "Flask", "Laravel"], "correct": 1},
+	{"question": "Which of the following is a back-end web development framework?", "choices": ["Django", "React", "Flask", "Laravel"], "correct": 0},
+	{"question": "Which of the following is a database management system?", "choices": ["MySQL", "React", "Flask", "Laravel"], "correct": 0}
 ]
 
 var _popup: Control
