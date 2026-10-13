@@ -8,12 +8,21 @@ signal answered(was_correct: bool)
 const POPUP_SCENE: PackedScene = preload("res://tscn/trivia/trivia_popup.tscn")
 
 const QUESTIONS: Array[Dictionary] = [
-	{"question": "What is the capital of France?", "choices": ["Paris", "London", "Rome", "Berlin"], "correct": 0},
-	{"question": "What is 7 x 8?", "choices": ["54", "56", "62", "64"], "correct": 1},
-	{"question": "Which planet is known as the Red Planet?", "choices": ["Venus", "Jupiter", "Mars", "Saturn"], "correct": 2},
-	{"question": "How many continents are there on Earth?", "choices": ["5", "6", "7", "8"], "correct": 2},
-	{"question": "What is the largest ocean on Earth?", "choices": ["Atlantic", "Indian", "Arctic", "Pacific"], "correct": 3},
-	{"question": "In what year did World War II end?", "choices": ["1943", "1944", "1945", "1946"], "correct": 2},
+	{"question": "Which lecturer is also an advisor?", "choices": ["Christoph Csallner", "Donna French", "Chenxi Wang", "Marika Apostolova"], "correct": 1},
+	{"question": "How many bits are in a byte?", "choices": ["4", "8", "16", "32"], "correct": 1},
+	{"question": "Which building is the Science and Engineering Library in?", "choices": ["Nedderman Hall", "Engineering Research Building", "SEIR", "Central Library"], "correct": 0},
+	{"question": "Out of the following companies, which is not considered a FAANG company?", "choices": ["Meta", "Amazon", "Nvidia", "Google"], "correct": 2},
+	{"question": "Which of the below is not a current CSE undergraduate advisor?", "choices": ["Katy Gonzalez", "Melinda Rose", "Katie MacKenzie", "Ryanne Johnson"], "correct": 1},
+	{"question": "What year was UTA founded?", "choices": ["1870", "1885", "1895", "1909"], "correct": 2},
+	{"question": "Which UTA building houses the undergraduate CSE advisors?", "choices": ["Nedderman Hall", "Engineering Research Building", "SEIR", "Central Library"], "correct": 1},
+	{"question": "Which programming language is primarily used for Godot Engine scripting?", "choices": ["C#", "GDScript", "Python", "JavaScript"], "correct": 1},
+	{"question": "What does HTML stand for?", "choices": ["HyperText Markup Language", "HighText Machine Language", "HyperText Markdown Language", "HyperTool Multi Language"], "correct": 0},
+	{"question": "Which of the following does not exist in GitHub?", "choices": ["Repositories", "Issues", "Pull Requests", "Branches", "Widgets"], "correct": 4},
+	{"question": "Which version control system is commonly used with GitHub?", "choices": ["Subversion", "Mercurial", "Git", "CVS"], "correct": 2},
+	{"question": "What is the main programming language taught in CSE 1310?", "choices": ["C", "C++", "Python", "Java"], "correct": 0},
+	{"question": "Which of the following is a front-end web development framework?", "choices": ["Django", "React", "Flask", "Laravel"], "correct": 1},
+	{"question": "Which of the following is a back-end web development framework?", "choices": ["Django", "React", "Flask", "Laravel"], "correct": 0},
+	{"question": "Which of the following is a database management system?", "choices": ["MySQL", "React", "Flask", "Laravel"], "correct": 0}
 ]
 
 var _popup: Control

@@ -1,18 +1,18 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://dgn2524yy87t4"]
 
-[ext_resource type="Script" path="res://scripts/trivia/trivia_popup.gd" id="1_popup"]
+[ext_resource type="Script" uid="uid://by62km78yr5rj" path="res://scripts/trivia/trivia_popup.gd" id="1_popup"]
 
-[node name="TriviaPopup" type="Control"]
+[node name="TriviaPopup" type="Control" unique_id=1423234570]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-process_mode = 3
 script = ExtResource("1_popup")
 
-[node name="DimBackground" type="ColorRect" parent="."]
+[node name="DimBackground" type="ColorRect" parent="." unique_id=55339465]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1972585529]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,39 +29,39 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer" unique_id=1686205668]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer" unique_id=1243576051]
 layout_mode = 2
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer" unique_id=974255275]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="QuestionLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
+[node name="QuestionLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=81955344]
 custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
 text = "Question"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Choice1" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Choice1" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1911005553]
 layout_mode = 2
 text = "1."
 
-[node name="Choice2" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Choice2" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1392781395]
 layout_mode = 2
 text = "2."
 
-[node name="Choice3" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Choice3" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=282144504]
 layout_mode = 2
 text = "3."
 
-[node name="Choice4" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Choice4" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=213188493]
 layout_mode = 2
 text = "4."

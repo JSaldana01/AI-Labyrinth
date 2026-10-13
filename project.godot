@@ -18,8 +18,9 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameState="*res://scripts/game/game_state.gd"
-TriviaManager="*res://scripts/trivia/trivia_manager.gd"
 EnvManager="*uid://ciim0jx0udrii"
+Music="*uid://dssfc3op8030s"
+TriviaManager="*res://scripts/trivia/trivia_manager.gd"
 
 [display]
 
