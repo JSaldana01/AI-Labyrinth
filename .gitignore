@@ -5,3 +5,4 @@
 *.sln.DotSettings.user
 .env
 export_presets.cfg
+build/
