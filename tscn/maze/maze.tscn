@@ -2,21 +2,23 @@
 
 [ext_resource type="PackedScene" uid="uid://xdreshbgv5kt" path="res://tscn/player.tscn" id="1_6aav3"]
 [ext_resource type="Script" uid="uid://cimfaeqbd2nse" path="res://scripts/maze/maze_generator.gd" id="2_maze_gen"]
+[ext_resource type="Environment" uid="uid://bqk3qrp8qggc8" path="res://art/maze_enviroment.tres" id="2_rgi1u"]
+[ext_resource type="Texture2D" uid="uid://dghacy44bpw40" path="res://art/textures/floor/cobblestone_floor_03_diff_1k.jpg" id="3_hgte0"]
 [ext_resource type="PackedScene" path="res://tscn/ui/hud.tscn" id="3_hud"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
-
-[sub_resource type="Sky" id="Sky_1"]
-sky_material = SubResource("ProceduralSkyMaterial_1")
-
-[sub_resource type="Environment" id="Environment_1"]
-background_mode = 2
-sky = SubResource("Sky_1")
-ambient_light_source = 3
-ambient_light_energy = 0.5
+[ext_resource type="Texture2D" uid="uid://xyn2kgl7gc8r" path="res://art/textures/floor/cobblestone_floor_03_nor_gl_1k.jpg" id="4_6f5dt"]
+[ext_resource type="Texture2D" uid="uid://js2ncxsbbju5" path="res://art/textures/floor/cobblestone_floor_03_rough_1k.jpg" id="5_dhn2x"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qnmab"]
 size = Vector2(24, 24)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0qve2"]
+albedo_color = Color(0.84225655, 0.8180213, 0.8720532, 1)
+albedo_texture = ExtResource("3_hgte0")
+roughness_texture = ExtResource("5_dhn2x")
+normal_enabled = true
+normal_texture = ExtResource("4_6f5dt")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qnmab"]
 size = Vector3(24, 1, 24)
@@ -25,10 +27,12 @@ size = Vector3(24, 1, 24)
 script = ExtResource("2_maze_gen")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1778921706]
-environment = SubResource("Environment_1")
+environment = ExtResource("2_rgi1u")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=289304197]
 transform = Transform3D(0.70710677, 0.49999997, -0.49999997, 0, 0.70710677, 0.70710677, 0.70710677, -0.49999997, 0.49999997, 0, 0, 0)
+light_color = Color(0.78431374, 0.72156864, 1, 1)
+light_energy = 0.4
 shadow_enabled = true
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=778562776]
@@ -36,6 +40,7 @@ shadow_enabled = true
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=777312482]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 12)
 mesh = SubResource("PlaneMesh_qnmab")
+surface_material_override/0 = SubResource("StandardMaterial3D_0qve2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1147725756]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -0.5, 12)
