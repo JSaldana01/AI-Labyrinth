@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Supabase;
 using Supabase.Gotrue.Exceptions;
+using Empty.scripts.auth;
 
 public partial class AuthMenu : Control
 {
