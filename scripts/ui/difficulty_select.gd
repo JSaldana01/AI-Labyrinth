@@ -5,10 +5,12 @@ extends Control
 const MAZE_SCENE := "res://tscn/maze/maze.tscn"
 const BACKGROUND: Texture2D = preload("res://scripts/ui/assets/images/background-image.png")
 
+const GAME_STATE_SCRIPT = preload("res://scripts/game/game_state.gd")
+
 const DESCRIPTIONS := {
-	GameState.Difficulty.EASY: "Smaller maze, no enemy",
-	GameState.Difficulty.MEDIUM: "Slow skeleton chases you, 3 hearts",
-	GameState.Difficulty.HARD: "Fast skeleton, larger maze, 1 heart",
+	GAME_STATE_SCRIPT.Difficulty.EASY: "Smaller maze, no enemy",
+	GAME_STATE_SCRIPT.Difficulty.MEDIUM: "Slow skeleton chases you, 3 hearts",
+	GAME_STATE_SCRIPT.Difficulty.HARD: "Fast skeleton, larger maze, 1 heart",
 }
 
 
