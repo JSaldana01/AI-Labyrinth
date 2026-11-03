@@ -2,6 +2,8 @@ using Godot;
 using System;
 using FluentValidation;
 
+namespace Empty.scripts.auth;
+
 public class AuthData
 {
 	public string Email { get; set; }

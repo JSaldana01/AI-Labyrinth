@@ -10,7 +10,13 @@ public static class DBManager
 	{
 		string url = EnvManager.Instance.SupabaseUrl;
 		string key = EnvManager.Instance.SupabaseKey;
-		
+
+		if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(key))
+		{
+			GD.PrintErr("Supabase not initialized: SUPABASE_URL / SUPABASE_KEY missing.");
+			return;
+		}
+
 		Supabase = new Client(url, key);
 		_ = Supabase.InitializeAsync().ContinueWith(t =>
 		{

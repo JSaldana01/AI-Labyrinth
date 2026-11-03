@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Supabase;
 using Supabase.Gotrue.Exceptions;
+using Empty.scripts.auth;
 
 public partial class AuthMenu : Control
 {
@@ -25,7 +26,7 @@ public partial class AuthMenu : Control
 
 	[Export] private Button _testLoginButton;
 
-	private const string MazeScenePath = "res://tscn/maze/maze.tscn";
+	private const string MazeScenePath = "res://tscn/ui/difficulty_select.tscn";
 
 	private AuthValidator _validator = new AuthValidator();
 	

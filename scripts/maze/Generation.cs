@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace Empty.scripts.maze;
+
 public partial class Generation : Node
 {
 	// Called when the node enters the scene tree for the first time.
@@ -13,7 +15,7 @@ public partial class Generation : Node
 	{
 	}
 
-	private void GenerateMaze(String seed, int width, int height)
+	private static void GenerateMaze(String seed, int width, int height)
 	{
 		
 	}

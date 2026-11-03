@@ -8,6 +8,10 @@
   <ItemGroup>
     <PackageReference Include="dotenv.net" Version="4.2.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.403">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Supabase" Version="8.1.1" />
   </ItemGroup>
   <ItemGroup>
@@ -15,6 +19,5 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".env" />
-    <Content Include="README.md" />
   </ItemGroup>
 </Project>
