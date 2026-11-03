@@ -10,3 +10,5 @@ Labyrinthos/
 supabase/.gitignore
 **/bin/
 **/obj/
+tests/AuthTests/bin/
+tests/AuthTests/obj/
