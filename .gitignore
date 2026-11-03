@@ -6,3 +6,7 @@
 .env
 export_presets.cfg
 build/
+Labyrinthos/
+supabase/.gitignore
+**/bin/
+**/obj/

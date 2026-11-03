@@ -15,3 +15,11 @@ Because this game is built with **Godot 4 (.NET / C#)**, ensure you have the **.
 2. Under the latest release, download the attached `.zip` file.
 3. **Extract the entire `.zip` folder** to a location on your computer. *(Do not run the `.exe` directly from inside the unextracted `.zip` preview window!)*
 4. Open the extracted folder and double-click the `.exe` file to start the game.
+
+---
+
+## Supabase + AI mazes (optional)
+
+Logged-in players call the **`bright-service`** Edge Function (`/functions/v1/bright-service`). If it still runs the old matrix demo or is missing, the game uses local DFS.
+
+Deploy steps: **[supabase/DEPLOY.md](supabase/DEPLOY.md)**.

@@ -1,20 +1,8 @@
 using Godot;
-using System;
 
+namespace Maze;
+
+/// <summary>Legacy node placeholder; maze loading is handled by <see cref="MazeSession"/>.</summary>
 public partial class Generation : Node
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-
-	private void GenerateMaze(String seed, int width, int height)
-	{
-		
-	}
 }

@@ -10,6 +10,9 @@ public partial class EnvManager : Node
 	public string SupabaseUrl { get; private set; }
 	public string SupabaseKey { get; private set; }
 
+	/// <summary>Edge Function slug (default: bright-service on this project's Supabase).</summary>
+	public string MazeEdgeFunction { get; private set; } = "bright-service";
+
 	public override void _EnterTree()
 	{
 		if (Instance != null)
@@ -31,6 +34,8 @@ public partial class EnvManager : Node
 					SupabaseUrl = line.Substring(13).Trim('"', '\'');
 				else if (line.StartsWith("SUPABASE_KEY=")) 
 					SupabaseKey = line.Substring(13).Trim('"', '\'');
+				else if (line.StartsWith("MAZE_EDGE_FUNCTION="))
+					MazeEdgeFunction = line.Substring(19).Trim('"', '\'');
 			}
 		}
 		else
@@ -41,6 +46,10 @@ public partial class EnvManager : Node
 		if (string.IsNullOrEmpty(SupabaseUrl) || string.IsNullOrEmpty(SupabaseKey))
 		{
 			GD.PrintErr("CRITICAL: Supabase environment variables are missing.");
+		}
+		else
+		{
+			GD.Print($"[Maze] Env: Supabase host={new Uri(SupabaseUrl).Host} edge_fn={MazeEdgeFunction}");
 		}
 		
 		//Might not be able to use this

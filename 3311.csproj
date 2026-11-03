@@ -17,4 +17,7 @@
     <Content Include=".env" />
     <Content Include="README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="tools/**" />
+  </ItemGroup>
 </Project>

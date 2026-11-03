@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://3311.local/schemas/maze-definition.schema.json",
+  "title": "MazeDefinition",
+  "type": "object",
+  "required": ["schema_version", "width", "height", "spawn", "exit", "cells"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "width": { "type": "integer", "minimum": 2, "maximum": 32 },
+    "height": { "type": "integer", "minimum": 2, "maximum": 32 },
+    "spawn": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "exit": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "cells": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/cell" }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "wallSet": {
+      "type": "object",
+      "required": ["N", "S", "E", "W"],
+      "additionalProperties": false,
+      "properties": {
+        "N": { "type": "boolean" },
+        "S": { "type": "boolean" },
+        "E": { "type": "boolean" },
+        "W": { "type": "boolean" }
+      }
+    },
+    "cell": {
+      "type": "object",
+      "required": ["walls"],
+      "additionalProperties": false,
+      "properties": {
+        "walls": { "$ref": "#/$defs/wallSet" },
+        "player_blocking": { "type": "boolean", "default": false },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": true,
+          "default": {}
+        }
+      }
+    }
+  }
+}

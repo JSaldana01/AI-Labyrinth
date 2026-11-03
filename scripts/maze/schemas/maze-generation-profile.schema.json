@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://3311.local/schemas/maze-generation-profile.schema.json",
+  "title": "MazeGenerationProfile",
+  "type": "object",
+  "required": ["schema_version", "width", "height", "keys_required"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "width": { "type": "integer", "minimum": 2, "maximum": 32 },
+    "height": { "type": "integer", "minimum": 2, "maximum": 32 },
+    "keys_required": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "fork_min_open_sides": { "type": "integer", "minimum": 2, "maximum": 4, "default": 3 },
+    "prompt": { "type": "string" },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "must_be_solvable": { "type": "boolean", "default": true },
+        "max_player_blocking_ratio": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.05 }
+      }
+    },
+    "cell_defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "player_blocking": { "type": "boolean", "default": false }
+      }
+    },
+    "allowed_tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["trivia"]
+    },
+    "spawn": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "exit": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "integer", "minimum": 0 }
+    }
+  }
+}

@@ -1,0 +1,933 @@
+{
+  "schema_version": 1,
+  "width": 9,
+  "height": 9,
+  "spawn": [
+    0,
+    0
+  ],
+  "exit": [
+    8,
+    8
+  ],
+  "cells": [
+    [
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [
+          "trivia"
+        ],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [
+          "trivia"
+        ],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [
+          "trivia"
+        ],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ],
+    [
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      },
+      {
+        "walls": {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        "player_blocking": false,
+        "tags": [],
+        "properties": {}
+      }
+    ]
+  ],
+  "metadata": {
+    "source": "local_dfs"
+  }
+}
