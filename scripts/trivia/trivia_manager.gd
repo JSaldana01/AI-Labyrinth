@@ -17,7 +17,7 @@ const QUESTIONS: Array[Dictionary] = [
 	{"question": "Which UTA building houses the undergraduate CSE advisors?", "choices": ["Nedderman Hall", "Engineering Research Building", "SEIR", "Central Library"], "correct": 1},
 	{"question": "Which programming language is primarily used for Godot Engine scripting?", "choices": ["C#", "GDScript", "Python", "JavaScript"], "correct": 1},
 	{"question": "What does HTML stand for?", "choices": ["HyperText Markup Language", "HighText Machine Language", "HyperText Markdown Language", "HyperTool Multi Language"], "correct": 0},
-	{"question": "Which of the following does not exist in GitHub?", "choices": ["Repositories", "Issues", "Pull Requests", "Branches", "Widgets"], "correct": 4},
+	{"question": "Which of the following does not exist in GitHub?", "choices": ["Repositories", "Issues", "Pull Requests", "Widgets"], "correct": 3},
 	{"question": "Which version control system is commonly used with GitHub?", "choices": ["Subversion", "Mercurial", "Git", "CVS"], "correct": 2},
 	{"question": "What is the main programming language taught in CSE 1310?", "choices": ["C", "C++", "Python", "Java"], "correct": 0},
 	{"question": "Which of the following is a front-end web development framework?", "choices": ["Django", "React", "Flask", "Laravel"], "correct": 1},

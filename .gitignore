@@ -5,4 +5,5 @@
 *.sln.DotSettings.user
 .env
 export_presets.cfg
-./Labyrinthos/
+tests/AuthTests/bin/
+tests/AuthTests/obj/
