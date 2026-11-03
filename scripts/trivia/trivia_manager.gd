@@ -22,7 +22,22 @@ const QUESTIONS: Array[Dictionary] = [
 	{"question": "What is the main programming language taught in CSE 1310?", "choices": ["C", "C++", "Python", "Java"], "correct": 0},
 	{"question": "Which of the following is a front-end web development framework?", "choices": ["Django", "React", "Flask", "Laravel"], "correct": 1},
 	{"question": "Which of the following is a back-end web development framework?", "choices": ["Django", "React", "Flask", "Laravel"], "correct": 0},
-	{"question": "Which of the following is a database management system?", "choices": ["MySQL", "React", "Flask", "Laravel"], "correct": 0}
+	{"question": "Which of the following is a database management system?", "choices": ["MySQL", "React", "Flask", "Laravel"], "correct": 0},
+	{"question": "Which of the following is not a programming language?", "choices": ["Python", "Java", "HTML", "C++"], "correct": 2},
+	{"question": "Which of the following is a markup language?", "choices": ["HTML", "Python", "C++", "Java"], "correct": 0},
+	{"question": "Which of the following is not a topic discussed in Dr. Csallner's CSE 3311 course?", "choices": ["Use Cases", "Iterative Programming", "Agentic Coding", "Citations"], "correct": 3},
+	{"question": "Which of the following is not a gaming platform?", "choices": ["PlayStation", "Xbox", "Nintendo Switch", "Windows"], "correct": 3},
+	{"question": "Which of the following is a type of computer memory?", "choices": ["RAM", "CPU", "GPU", "SSD"], "correct": 0},
+	{"question": "Which of the following is a type of storage device?", "choices": ["RAM", "CPU", "GPU", "SSD"], "correct": 3},
+	{"question": "Which of the following is a type of processor?", "choices": ["RAM", "CPU", "GPU", "SSD"], "correct": 1},
+	{"question": "Who won UTA's Hackathon in 2024?", "choices": ["Team AiAiO", "Team Alpha", "Team GitShredded", "Team Beta"], "correct": 0},
+	{"question": "What year did the BugHouse open?", "choices": ["2021", "2022", "2023", "2024"], "correct": 3},
+	{"question": "What should you do if you encounter a bug in the game?", "choices": ["Ignore it", "Report it to the developers", "Try to fix it yourself", "Restart the game"], "correct": 1},
+	{"question": "Which of the following is a common method for debugging code?", "choices": ["Print statements", "Guessing", "Ignoring errors", "Restarting the computer"], "correct": 0},
+	{"question": "What does CSE stand for?", "choices": ["Computer Science and Engineering", "Civil and Structural Engineering", "Chemical Science and Engineering", "Computational Systems Engineering"], "correct": 0},
+	{"question": "Which of the following is not an agile type of programming development process?", "choices": ["Iterative", "Waterfall", "Agile", "Scrum"], "correct": 1},
+	{"question": "Which of the following is a version control system?", "choices": ["Git", "Docker", "Kubernetes", "Jenkins"], "correct": 0},
+	{"question": "What is the minimum GPA required for CSE majors?", "choices": ["2.0", "2.25", "2.5", "2.35"], "correct": 1}
 ]
 
 var _popup: Control
