@@ -76,10 +76,16 @@ const OPPOSITE := {"N": "S", "S": "N", "E": "W", "W": "E"}
 @onready var floor_mesh: MeshInstance3D = $Floor/MeshInstance3D
 @onready var floor_shape: CollisionShape3D = $Floor/CollisionShape3D
 @onready var player: CharacterBody3D = $Player
+@onready var generation: Node = $Generation
 
 # grid[x][y] = {"N": bool, "S": bool, "E": bool, "W": bool}
 # A true value means that a wall is present
 var grid: Array = []
+var _maze_load_id: int = 0
+var _loading_layer: CanvasLayer
+var _loading_label: Label
+var _loading_dot_phase: int = 0
+var _loading_dot_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -112,13 +118,188 @@ func _rebuild_maze() -> void:
 	_resize_floor()
 	_build_roof()
 	_build_fog()
+
+	if GameState.use_local_maze:
+		print("[Maze] use_local_maze=true — client DFS only (tests/offline).")
+		_build_local_maze("client")
+		return
+
+	_maze_load_id += 1
+	var load_id := _maze_load_id
+	print("[Maze] Waiting for edge (or client fallback)…")
+	_show_maze_loading()
+	var seed_hint := "run-%d-%d" % [Time.get_unix_time_from_system(), load_id]
+	generation.call(
+		"RequestMaze",
+		grid_width,
+		grid_height,
+		GameState.maze_profile_slug(),
+		seed_hint
+	)
+
+
+func _build_local_maze(source: String) -> void:
 	_generate_grid()
 	_carve_maze()
+	_finish_maze_geometry(source)
+
+
+func _finish_maze_geometry(source: String) -> void:
+	_hide_maze_loading()
 	_build_walls()
 	_place_fork_triggers()
 	_place_exit_gate()
 	_place_player()
 	_spawn_enemy()
+	print(_maze_source_log_line(source))
+
+
+func _ensure_maze_loading_overlay() -> void:
+	if _loading_layer != null:
+		return
+	_loading_layer = CanvasLayer.new()
+	_loading_layer.layer = 128
+	_loading_layer.name = "MazeLoadingOverlay"
+	add_child(_loading_layer)
+
+	var bg := TextureRect.new()
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bg.texture = MAZE_TEXTURE
+	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	bg.stretch_mode = TextureRect.STRETCH_TILE
+	_loading_layer.add_child(bg)
+
+	var dim := ColorRect.new()
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dim.color = Color(0, 0, 0, 0.35)
+	_loading_layer.add_child(dim)
+
+	_loading_label = Label.new()
+	_loading_label.set_anchors_preset(Control.PRESET_CENTER)
+	_loading_label.anchor_left = 0.5
+	_loading_label.anchor_right = 0.5
+	_loading_label.anchor_top = 0.5
+	_loading_label.anchor_bottom = 0.5
+	_loading_label.offset_left = -280
+	_loading_label.offset_right = 280
+	_loading_label.offset_top = -24
+	_loading_label.offset_bottom = 24
+	_loading_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_loading_label.add_theme_font_size_override("font_size", 32)
+	_loading_label.add_theme_color_override("font_color", Color(0.95, 0.95, 0.92))
+	_loading_label.text = "Generating maze . . ."
+	_loading_layer.add_child(_loading_label)
+	_loading_layer.hide()
+
+
+func _show_maze_loading() -> void:
+	_ensure_maze_loading_overlay()
+	_loading_dot_phase = 0
+	_loading_dot_timer = 0.0
+	_loading_label.text = "Generating maze . . ."
+	player.visible = false
+	player.set_physics_process(false)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	_loading_layer.show()
+	set_process(true)
+
+
+func _hide_maze_loading() -> void:
+	if _loading_layer != null:
+		_loading_layer.hide()
+	set_process(false)
+	player.visible = true
+	player.set_physics_process(true)
+	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _process(delta: float) -> void:
+	if _loading_layer == null or not _loading_layer.visible:
+		return
+	_loading_dot_timer += delta
+	if _loading_dot_timer < 0.5:
+		return
+	_loading_dot_timer = 0.0
+	_loading_dot_phase = (_loading_dot_phase + 1) % 4
+	match _loading_dot_phase:
+		0:
+			_loading_label.text = "Generating maze"
+		1:
+			_loading_label.text = "Generating maze ."
+		2:
+			_loading_label.text = "Generating maze . ."
+		_:
+			_loading_label.text = "Generating maze . . ."
+
+
+func _maze_source_log_line(source: String) -> String:
+	match source:
+		"gemini":
+			return "[Maze] Ready — %dx%d — source=Gemini (edge)" % [grid_width, grid_height]
+		"local":
+			return "[Maze] Ready — %dx%d — source=Local edge DFS (Gemini unavailable/failed)" % [grid_width, grid_height]
+		_:
+			return "[Maze] Ready — %dx%d — source=Local client DFS" % [grid_width, grid_height]
+
+
+## Called from Generation.cs via CallDeferred after edge / fallback response.
+func on_maze_loaded(
+	definition: Variant,
+	generator: String,
+	fail_reason: String,
+	debug_detail: String = "",
+) -> void:
+	if definition == null or fail_reason != "":
+		print(
+			"[Maze] Edge failed (%s); using client DFS carve." % (fail_reason if fail_reason != "" else "empty response")
+		)
+		if debug_detail != "":
+			print("[Maze] %s" % debug_detail)
+		_build_local_maze("client")
+		return
+
+	if not _apply_definition(definition):
+		print("[Maze] Edge definition invalid for %dx%d — client DFS carve." % [grid_width, grid_height])
+		_build_local_maze("client")
+		return
+
+	if debug_detail != "":
+		print("[Maze] %s" % debug_detail)
+	_finish_maze_geometry(generator)
+
+
+func _apply_definition(definition: Variant) -> bool:
+	if typeof(definition) != TYPE_DICTIONARY:
+		return false
+	var def: Dictionary = definition
+	if not def.has("cells") or not def.has("width") or not def.has("height"):
+		return false
+	var w: int = int(def["width"])
+	var h: int = int(def["height"])
+	if w != grid_width or h != grid_height:
+		return false
+	var cells: Array = def["cells"]
+	if cells.size() != w:
+		return false
+	grid.clear()
+	for x in range(w):
+		var col: Array = cells[x]
+		if col.size() != h:
+			return false
+		var column: Array = []
+		for y in range(h):
+			var cell = col[y]
+			if typeof(cell) != TYPE_DICTIONARY:
+				return false
+			column.append({
+				"N": bool(cell.get("N", true)),
+				"S": bool(cell.get("S", true)),
+				"E": bool(cell.get("E", true)),
+				"W": bool(cell.get("W", true)),
+			})
+		grid.append(column)
+	return true
 
 
 # --- Ground fog ----------------------------------------------------------

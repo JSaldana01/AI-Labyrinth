@@ -9,14 +9,21 @@ const MAZE_SCENE: PackedScene = preload("res://tscn/maze/maze.tscn")
 const REBUILDS := 40
 
 
+func before_all() -> void:
+	GameState.use_local_maze = true
+
+
 func after_all() -> void:
+	GameState.use_local_maze = false
 	GameState.set_difficulty(D.MEDIUM)
 
 
 func _make_maze(level: int) -> Node3D:
+	GameState.use_local_maze = true
 	GameState.set_difficulty(level)
 	var maze: Node3D = MAZE_SCENE.instantiate()
 	add_child_autofree(maze)
+	await get_tree().process_frame
 	return maze
 
 
@@ -251,3 +258,36 @@ func test_roof_matches_maze_size_and_height() -> void:
 	var size: float = maze.grid_width * maze.cell_size
 	assert_eq(roof.mesh.size, Vector2(size, size))
 	assert_eq(roof.position.y, maze.wall_height)
+
+
+func test_on_maze_loaded_applies_fixture_without_carving() -> void:
+	GameState.use_local_maze = false
+	GameState.set_difficulty(D.EASY)
+	var maze: Node3D = MAZE_SCENE.instantiate()
+	add_child_autofree(maze)
+	await get_tree().process_frame
+	maze._generate_grid()
+	maze._carve_maze()
+	var snapshot: Array = []
+	for x in range(maze.grid_width):
+		var col: Array = []
+		for y in range(maze.grid_height):
+			col.append(maze.grid[x][y].duplicate())
+		snapshot.append(col)
+	var fixture := {
+		"width": maze.grid_width,
+		"height": maze.grid_height,
+		"spawn": [0, 0],
+		"exit": [maze.grid_width - 1, maze.grid_height - 1],
+		"cells": snapshot,
+	}
+	for root_name in ["Walls", "ForkTriggers", "Exit"]:
+		var root: Node3D = maze.get_node(root_name)
+		for child in root.get_children():
+			root.remove_child(child)
+			child.queue_free()
+	maze.on_maze_loaded(fixture, "gemini", "")
+	assert_eq(maze.walls_root.get_child_count() > 0, true)
+	assert_gte(maze.fork_triggers_root.get_child_count(), GameState.keys_required)
+	assert_eq(maze.exit_root.get_child_count(), 1)
+	GameState.use_local_maze = true

@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://xdreshbgv5kt" path="res://tscn/player.tscn" id="1_6aav3"]
 [ext_resource type="Script" uid="uid://cimfaeqbd2nse" path="res://scripts/maze/maze_generator.gd" id="2_maze_gen"]
+[ext_resource type="Script" path="res://scripts/maze/Generation.cs" id="6_generation"]
 [ext_resource type="PackedScene" uid="uid://b3xjjx78ahpjm" path="res://tscn/ui/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://tscn/ui/pause_menu.tscn" id="4_pause"]
 [ext_resource type="PackedScene" path="res://tscn/ui/game_over_menu.tscn" id="5_over"]
@@ -37,6 +38,9 @@ shape = SubResource("BoxShape3D_qnmab")
 [node name="ForkTriggers" type="Node3D" parent="." unique_id=2033088809]
 
 [node name="Exit" type="Node3D" parent="." unique_id=629885165]
+
+[node name="Generation" type="Node" parent="."]
+script = ExtResource("6_generation")
 
 [node name="HUD" parent="." unique_id=1926400935 instance=ExtResource("3_hud")]
 

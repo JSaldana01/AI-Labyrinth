@@ -7,14 +7,21 @@ const D = preload("res://scripts/game/game_state.gd").Difficulty
 const MAZE_SCENE: PackedScene = preload("res://tscn/maze/maze.tscn")
 
 
+func before_all() -> void:
+	GameState.use_local_maze = true
+
+
 func after_all() -> void:
+	GameState.use_local_maze = false
 	GameState.set_difficulty(D.MEDIUM)
 
 
 func _make_maze(level: int) -> Node3D:
+	GameState.use_local_maze = true
 	GameState.set_difficulty(level)
 	var maze: Node3D = MAZE_SCENE.instantiate()
 	add_child_autofree(maze)
+	await get_tree().process_frame
 	return maze
 
 

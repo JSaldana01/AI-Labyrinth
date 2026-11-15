@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "test": "deno test --allow-env --allow-net _shared/maze.test.ts",
+    "test:unit": "deno test --allow-env _shared/maze.test.ts --filter \"!/live/\""
+  }
+}

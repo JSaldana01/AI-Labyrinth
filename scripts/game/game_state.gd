@@ -10,6 +10,9 @@ signal difficulty_changed
 signal lives_changed(new_lives: int)
 signal game_over
 
+## When true, maze_generator uses local DFS only (GUT / offline).
+var use_local_maze := false
+
 enum Difficulty { EASY, MEDIUM, HARD }
 
 # enemy_speed 0 means no enemy; lives 0 means no hearts are shown.
@@ -68,6 +71,16 @@ func damage_player() -> void:
 
 func get_setting(key: String):
 	return DIFFICULTY_SETTINGS[difficulty][key]
+
+
+func maze_profile_slug() -> String:
+	match difficulty:
+		Difficulty.EASY:
+			return "easy-5x5"
+		Difficulty.HARD:
+			return "hard-8x8"
+		_:
+			return "medium-6x6"
 
 
 func add_key() -> void:
