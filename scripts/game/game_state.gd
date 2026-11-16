@@ -1,7 +1,8 @@
 extends Node
 
 ## Autoloaded singleton. Tracks keys earned from trivia questions and
-## whether the maze exit can be unlocked yet.
+## whether the maze exit can be unlocked yet. Also owns the timed power-up
+## granted for correct trivia answers.
 
 signal key_count_changed(new_count: int)
 signal exit_denied(keys_needed: int)
@@ -9,8 +10,12 @@ signal level_completed
 signal difficulty_changed
 signal lives_changed(new_lives: int)
 signal game_over
+signal power_up_changed(power_up: int, time_left: float)
 
 enum Difficulty { EASY, MEDIUM, HARD }
+enum PowerUp { NONE, GHOST, BLASTER }
+
+const POWER_UP_DURATION := 10.0
 
 # enemy_speed 0 means no enemy; lives 0 means no hearts are shown.
 const DIFFICULTY_SETTINGS := {
@@ -36,11 +41,23 @@ var keys_required: int = DIFFICULTY_SETTINGS[Difficulty.MEDIUM]["keys_required"]
 var keys_collected: int = 0
 var lives: int = DIFFICULTY_SETTINGS[Difficulty.MEDIUM]["lives"]
 var is_game_over := false
+var active_power_up: int = PowerUp.NONE
+var power_up_time_left := 0.0
 # Mazes escaped this session, keyed by Difficulty.
 var mazes_completed := {Difficulty.EASY: 0, Difficulty.MEDIUM: 0, Difficulty.HARD: 0}
 # Set once the exit is used, so repeated stair contacts in the same frame can't
 # re-check keys against a half-reset state. Cleared by reset_keys().
 var _exiting := false
+
+
+# Uses the default pausable process mode, so the countdown stops while a
+# trivia question or the pause menu is open.
+func _process(delta: float) -> void:
+	if active_power_up == PowerUp.NONE:
+		return
+	power_up_time_left -= delta
+	if power_up_time_left <= 0.0:
+		clear_power_up()
 
 
 # Also used to replay: re-selecting the current difficulty restarts everything.
@@ -51,13 +68,14 @@ func set_difficulty(new_difficulty: int) -> void:
 	lives = DIFFICULTY_SETTINGS[difficulty]["lives"]
 	is_game_over = false
 	_exiting = false
+	clear_power_up()
 	difficulty_changed.emit()
 	key_count_changed.emit(keys_collected)
 	lives_changed.emit(lives)
 
 
 func damage_player() -> void:
-	if is_game_over or lives <= 0:
+	if is_game_over or lives <= 0 or is_ghost():
 		return
 	lives -= 1
 	lives_changed.emit(lives)
@@ -79,8 +97,32 @@ func reset_keys() -> void:
 	_exiting = false
 	keys_collected = 0
 	lives = DIFFICULTY_SETTINGS[difficulty]["lives"]
+	clear_power_up()
 	lives_changed.emit(lives)
 	key_count_changed.emit(keys_collected)
+
+
+# A new power-up replaces whatever is active and restarts the timer.
+func grant_random_power_up() -> void:
+	active_power_up = [PowerUp.GHOST, PowerUp.BLASTER].pick_random()
+	power_up_time_left = POWER_UP_DURATION
+	power_up_changed.emit(active_power_up, power_up_time_left)
+
+
+func clear_power_up() -> void:
+	if active_power_up == PowerUp.NONE:
+		return
+	active_power_up = PowerUp.NONE
+	power_up_time_left = 0.0
+	power_up_changed.emit(active_power_up, power_up_time_left)
+
+
+func is_ghost() -> bool:
+	return active_power_up == PowerUp.GHOST
+
+
+func has_blaster() -> bool:
+	return active_power_up == PowerUp.BLASTER
 
 
 func has_enough_keys() -> bool:

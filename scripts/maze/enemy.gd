@@ -27,6 +27,8 @@ func setup(maze: Node, player: Node3D, move_speed: float) -> void:
 	_maze = maze
 	_player = player
 	speed = move_speed
+	# Lets blaster projectiles tell the enemy apart from other areas (fork triggers).
+	add_to_group("enemy")
 
 	_model = MODEL_SCENE.instantiate()
 	_model.scale = Vector3.ONE * (TARGET_HEIGHT / MODEL_HEIGHT)
@@ -108,10 +110,18 @@ func _chase(delta: float) -> void:
 
 
 func _try_hit_player() -> void:
+	# Ghost mode: the enemy passes through the player without hurting them.
+	if GameState.is_ghost():
+		return
 	for body in get_overlapping_bodies():
 		if body == _player:
 			GameState.damage_player()
-			_cooldown = HIT_COOLDOWN
-			# Back off to the far side of the maze so the player can recover.
-			global_position = _maze.farthest_cell_center_from(_player.global_position)
+			respawn()
 			return
+
+
+# Used both after hitting the player and when hit by a blaster projectile.
+# Backs off to the far side of the maze so the player can recover.
+func respawn() -> void:
+	_cooldown = HIT_COOLDOWN
+	global_position = _maze.farthest_cell_center_from(_player.global_position)
