@@ -77,4 +77,7 @@ func _on_choice_selected(is_correct: bool) -> void:
 	get_tree().paused = false
 	if is_correct:
 		GameState.add_key()
+		# Power-ups only matter when there is an enemy (not on Easy).
+		if GameState.get_setting("enemy_speed") > 0.0:
+			GameState.grant_random_power_up()
 	answered.emit(is_correct)

@@ -8,13 +8,21 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
+@onready var flashlight: SpotLight3D = $Head/Camera3D/SpotLight3D
 
 const PITCH_LIMIT_DEGREES := 89.0
+const PROJECTILE := preload("res://scripts/player/projectile.gd")
+const FIRE_COOLDOWN := 0.4
+# Flashlight tint while Ghost Mode is active.
+const GHOST_LIGHT_COLOR := Color(0.6, 0.8, 1.0)
+
+var _fire_cooldown := 0.0
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	add_to_group("player")
+	GameState.power_up_changed.connect(_on_power_up_changed)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -31,8 +39,34 @@ func _unhandled_input(event: InputEvent) -> void:
 		var pitch_limit := deg_to_rad(PITCH_LIMIT_DEGREES)
 		head.rotation.x = clamp(head.rotation.x, -pitch_limit, pitch_limit)
 
+	# has_blaster() is checked first so the "shoot" action is only looked up
+	# while Blaster Mode is active.
+	if GameState.has_blaster() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED \
+			and event.is_action_pressed("shoot"):
+		_shoot()
+
+
+func _shoot() -> void:
+	if _fire_cooldown > 0.0:
+		return
+	_fire_cooldown = FIRE_COOLDOWN
+
+	var shot: Area3D = PROJECTILE.new()
+	# Fire where the camera looks, including pitch.
+	shot.direction = -camera.global_basis.z
+	# Added to the maze, not the player, so the shot doesn't move or turn with us.
+	get_parent().add_child(shot)
+	shot.global_position = camera.global_position
+
+
+func _on_power_up_changed(power_up: int, _time_left: float) -> void:
+	flashlight.light_color = GHOST_LIGHT_COLOR if power_up == GameState.PowerUp.GHOST else Color.WHITE
+
 
 func _physics_process(delta: float) -> void:
+	if _fire_cooldown > 0.0:
+		_fire_cooldown -= delta
+
 	# Will allow player to fall back down after jumping (jumping may not be necessary in the end)
 	if not is_on_floor():
 		velocity.y -= gravity * delta
