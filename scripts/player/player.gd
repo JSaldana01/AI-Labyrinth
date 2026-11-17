@@ -76,14 +76,17 @@ func _physics_process(delta: float) -> void:
 	# Movement input
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var current_move_speed := move_speed * (
+		GameState.SPEED_MULTIPLIER if GameState.has_speed_boost() else 1.0
+	)
 
 	if direction.length() > 0.0:
-		velocity.x = direction.x * move_speed
-		velocity.z = direction.z * move_speed
+		velocity.x = direction.x * current_move_speed
+		velocity.z = direction.z * current_move_speed
 	else:
 		# Decelerate instead of stopping instantly. Feels a bit better for me
-		velocity.x = move_toward(velocity.x, 0.0, move_speed)
-		velocity.z = move_toward(velocity.z, 0.0, move_speed)
+		velocity.x = move_toward(velocity.x, 0.0, current_move_speed)
+		velocity.z = move_toward(velocity.z, 0.0, current_move_speed)
 
 	move_and_slide()
 

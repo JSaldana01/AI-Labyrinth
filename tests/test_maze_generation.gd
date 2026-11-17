@@ -31,11 +31,63 @@ func _exit_cell(maze: Node3D) -> Vector2i:
 	return Vector2i(maze.grid_width - 1, maze.grid_height - 1)
 
 
+func test_loading_sprite_plays_and_stops_with_overlay() -> void:
+	GameState.set_difficulty(D.MEDIUM)
+	var maze: Node3D = MAZE_SCENE.instantiate()
+	add_child_autofree(maze)
+	await get_tree().process_frame
+
+	maze._show_maze_loading()
+	assert_true(maze._loading_layer.visible)
+	assert_true(maze._loading_sprite.is_playing())
+	assert_eq(maze._loading_sprite.animation, &"walk")
+	assert_not_null(maze._loading_sprite.sprite_frames.get_frame_texture(&"walk", 0))
+
+	maze._hide_maze_loading()
+	assert_false(maze._loading_layer.visible)
+	assert_false(maze._loading_sprite.is_playing())
+
+	maze._show_maze_loading()
+	assert_true(maze._loading_sprite.is_playing())
+	maze._hide_maze_loading()
+
+
+func test_loading_animation_advances_and_stops_after_success_or_fallback() -> void:
+	GameState.set_difficulty(D.MEDIUM)
+	var maze: Node3D = MAZE_SCENE.instantiate()
+	add_child_autofree(maze)
+	await get_tree().process_frame
+
+	var fixture := {
+		"width": maze.grid_width,
+		"height": maze.grid_height,
+		"cells": maze.grid.duplicate(true),
+	}
+	maze._show_maze_loading()
+	watch_signals(maze._loading_sprite)
+	await get_tree().create_timer(0.3).timeout
+	assert_signal_emitted(maze._loading_sprite, "frame_changed")
+
+	maze.on_maze_loaded(fixture, "gemini", "")
+	assert_false(maze._loading_layer.visible)
+	assert_false(maze._loading_sprite.is_playing())
+	assert_true(maze.player.visible)
+	assert_true(maze.player.is_physics_processing())
+
+	maze._show_maze_loading()
+	maze.on_maze_loaded(null, "client", "request_failed")
+	assert_false(maze._loading_layer.visible)
+	assert_false(maze._loading_sprite.is_playing())
+	assert_true(maze.player.visible)
+	assert_true(maze.player.is_physics_processing())
+	assert_eq(maze._distances_from(Vector2i.ZERO).size(), maze.grid_width * maze.grid_height)
+
+
 # --- Grid structure ------------------------------------------------------
 
 func test_grid_size_matches_difficulty() -> void:
 	for level in [D.EASY, D.MEDIUM, D.HARD]:
-		var maze := _make_maze(level)
+		var maze := await _make_maze(level)
 		var expected: int = GameState.DIFFICULTY_SETTINGS[level]["grid_size"]
 		assert_eq(maze.grid_width, expected, "width for %d" % level)
 		assert_eq(maze.grid.size(), expected)
@@ -44,7 +96,7 @@ func test_grid_size_matches_difficulty() -> void:
 
 func test_every_cell_is_reachable_from_start() -> void:
 	for level in [D.EASY, D.MEDIUM, D.HARD]:
-		var maze := _make_maze(level)
+		var maze := await _make_maze(level)
 		for i in range(REBUILDS):
 			maze._rebuild_maze()
 			var reachable: Dictionary = maze._distances_from(Vector2i(0, 0))
@@ -53,7 +105,7 @@ func test_every_cell_is_reachable_from_start() -> void:
 
 func test_exit_is_reachable_and_not_the_start() -> void:
 	for level in [D.EASY, D.MEDIUM, D.HARD]:
-		var maze := _make_maze(level)
+		var maze := await _make_maze(level)
 		for i in range(REBUILDS):
 			maze._rebuild_maze()
 			var reachable: Dictionary = maze._distances_from(Vector2i(0, 0))
@@ -63,7 +115,7 @@ func test_exit_is_reachable_and_not_the_start() -> void:
 
 func test_maze_is_a_perfect_maze_without_loops() -> void:
 	# DFS carving makes a spanning tree: open passages = cells - 1.
-	var maze := _make_maze(D.HARD)
+	var maze := await _make_maze(D.HARD)
 	for i in range(REBUILDS):
 		maze._rebuild_maze()
 		var open_sides := 0
@@ -74,7 +126,7 @@ func test_maze_is_a_perfect_maze_without_loops() -> void:
 
 
 func test_outer_boundary_is_fully_walled() -> void:
-	var maze := _make_maze(D.MEDIUM)
+	var maze := await _make_maze(D.MEDIUM)
 	for i in range(REBUILDS):
 		maze._rebuild_maze()
 		var w: int = maze.grid_width
@@ -88,7 +140,7 @@ func test_outer_boundary_is_fully_walled() -> void:
 
 
 func test_walls_are_consistent_between_neighbours() -> void:
-	var maze := _make_maze(D.MEDIUM)
+	var maze := await _make_maze(D.MEDIUM)
 	for i in range(REBUILDS):
 		maze._rebuild_maze()
 		for x in range(maze.grid_width):
@@ -102,7 +154,7 @@ func test_walls_are_consistent_between_neighbours() -> void:
 
 
 func test_fork_detection_uses_three_or_more_open_sides() -> void:
-	var maze := _make_maze(D.EASY)
+	var maze := await _make_maze(D.EASY)
 	assert_eq(maze._open_side_count({"N": true, "S": true, "E": true, "W": true}), 0)
 	assert_eq(maze._open_side_count({"N": false, "S": true, "E": true, "W": true}), 1)
 	assert_eq(maze._open_side_count({"N": false, "S": false, "E": false, "W": true}), 3)
@@ -111,7 +163,7 @@ func test_fork_detection_uses_three_or_more_open_sides() -> void:
 # --- Coordinates ---------------------------------------------------------
 
 func test_world_to_cell_and_cell_center_round_trip() -> void:
-	var maze := _make_maze(D.MEDIUM)
+	var maze := await _make_maze(D.MEDIUM)
 	for x in range(maze.grid_width):
 		for y in range(maze.grid_height):
 			var cell := Vector2i(x, y)
@@ -119,7 +171,7 @@ func test_world_to_cell_and_cell_center_round_trip() -> void:
 
 
 func test_world_to_cell_clamps_outside_positions() -> void:
-	var maze := _make_maze(D.MEDIUM)
+	var maze := await _make_maze(D.MEDIUM)
 	assert_eq(maze.world_to_cell(Vector3(-50, 0, -50)), Vector2i(0, 0))
 	assert_eq(maze.world_to_cell(Vector3(9999, 0, 9999)), _exit_cell(maze))
 
@@ -127,7 +179,7 @@ func test_world_to_cell_clamps_outside_positions() -> void:
 # --- Pathfinding helpers -------------------------------------------------
 
 func test_next_cell_toward_always_steps_closer_through_an_open_side() -> void:
-	var maze := _make_maze(D.HARD)
+	var maze := await _make_maze(D.HARD)
 	for i in range(10):
 		maze._rebuild_maze()
 		var target := Vector2i(0, 0)
@@ -138,13 +190,13 @@ func test_next_cell_toward_always_steps_closer_through_an_open_side() -> void:
 				continue
 			var step: Vector2i = maze.next_cell_toward(cell, target)
 			assert_eq(dist[step], dist[cell] - 1)
-			var delta := step - cell
+			var delta: Vector2i = step - cell
 			var dir_key: String = maze.DIRS.find_key(delta)
 			assert_false(maze.grid[cell.x][cell.y][dir_key], "step goes through a wall")
 
 
 func test_farthest_cell_has_the_maximum_distance() -> void:
-	var maze := _make_maze(D.MEDIUM)
+	var maze := await _make_maze(D.MEDIUM)
 	for i in range(10):
 		maze._rebuild_maze()
 		var origin := Vector3(maze.cell_size / 2.0, 1.0, maze.cell_size / 2.0)
@@ -157,7 +209,7 @@ func test_farthest_cell_has_the_maximum_distance() -> void:
 
 func test_enough_triggers_exist_for_required_keys() -> void:
 	for level in [D.EASY, D.MEDIUM, D.HARD]:
-		var maze := _make_maze(level)
+		var maze := await _make_maze(level)
 		for i in range(REBUILDS):
 			maze._rebuild_maze()
 			assert_gte(maze.fork_triggers_root.get_child_count(), GameState.keys_required)
@@ -165,7 +217,7 @@ func test_enough_triggers_exist_for_required_keys() -> void:
 
 func test_triggers_avoid_start_exit_and_each_other() -> void:
 	for level in [D.EASY, D.MEDIUM, D.HARD]:
-		var maze := _make_maze(level)
+		var maze := await _make_maze(level)
 		for i in range(REBUILDS):
 			maze._rebuild_maze()
 			var seen := {}
@@ -178,7 +230,7 @@ func test_triggers_avoid_start_exit_and_each_other() -> void:
 
 
 func test_relocated_trigger_lands_on_a_free_valid_cell() -> void:
-	var maze := _make_maze(D.MEDIUM)
+	var maze := await _make_maze(D.MEDIUM)
 	for i in range(REBUILDS):
 		maze._rebuild_maze()
 		var trigger: Node3D = maze.fork_triggers_root.get_child(0)
@@ -194,7 +246,7 @@ func test_relocated_trigger_lands_on_a_free_valid_cell() -> void:
 
 
 func test_relocate_does_nothing_when_no_cell_is_free() -> void:
-	var maze := _make_maze(D.EASY)
+	var maze := await _make_maze(D.EASY)
 	# Fill every non-start, non-exit cell with a trigger.
 	for trigger in maze.fork_triggers_root.get_children():
 		trigger.queue_free()
@@ -218,7 +270,7 @@ func test_relocate_does_nothing_when_no_cell_is_free() -> void:
 
 func test_stairs_always_face_an_open_side_of_the_exit_cell() -> void:
 	for level in [D.EASY, D.MEDIUM, D.HARD]:
-		var maze := _make_maze(level)
+		var maze := await _make_maze(level)
 		for i in range(REBUILDS * 5):
 			maze._rebuild_maze()
 			var cell: Dictionary = maze.grid[maze.grid_width - 1][maze.grid_height - 1]
@@ -233,7 +285,7 @@ func test_stairs_always_face_an_open_side_of_the_exit_cell() -> void:
 
 
 func test_one_exit_gate_is_created_per_maze() -> void:
-	var maze := _make_maze(D.MEDIUM)
+	var maze := await _make_maze(D.MEDIUM)
 	for i in range(5):
 		maze._rebuild_maze()
 		assert_eq(maze.exit_root.get_child_count(), 1)
@@ -242,7 +294,7 @@ func test_one_exit_gate_is_created_per_maze() -> void:
 # --- Rebuilding ----------------------------------------------------------
 
 func test_rebuild_does_not_accumulate_walls() -> void:
-	var maze := _make_maze(D.EASY)
+	var maze := await _make_maze(D.EASY)
 	maze._rebuild_maze()
 	# Wall count of a perfect maze is fixed by grid size.
 	var w: int = maze.grid_width
@@ -253,7 +305,7 @@ func test_rebuild_does_not_accumulate_walls() -> void:
 
 
 func test_roof_matches_maze_size_and_height() -> void:
-	var maze := _make_maze(D.HARD)
+	var maze := await _make_maze(D.HARD)
 	var roof: MeshInstance3D = maze.get_node("Roof")
 	var size: float = maze.grid_width * maze.cell_size
 	assert_eq(roof.mesh.size, Vector2(size, size))
