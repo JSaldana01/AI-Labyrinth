@@ -38,32 +38,117 @@ The counts below are test cases, including individual xUnit theory inputs.
 | [test_trivia.gd](tests/test_trivia.gd) | 11 | Unit and interaction | Question data, shuffle bag, answers and rewards, and using hints in the trivia popup. |
 | [test_triggers_and_exit.gd](tests/test_triggers_and_exit.gd) | 9 | Component and interaction | Key triggers, answer responses, exit requirements, player proximity, and staircase collision. See the known test issues below. |
 | [AuthValidatorTests.cs](tests/AuthTests/AuthValidatorTests.cs) | 29 | Unit | Email and password validation, error messages, whitespace, length limits, control characters, injection-style inputs, large inputs, and Unicode passwords. |
+| [maze_generation.test.ts](tests/maze_generation.test.ts) | 13 | Unit and optional integration | Edge maze logic (`supabase/functions/_shared/maze.ts`): path validation, local DFS, Gemini prompt, and an optional live call to Gemini 3.5 Flash-Lite when `GEMINI_API_KEY` is set. |
 
-`MazeTests.cs` is not present in this repository; no separate C# maze test suite is included in these counts.
+### Prerequisites
 
-### Running the tests
+| Suite | Install |
+| --- | --- |
+| Godot GUT | [Godot 4.7.2 .NET editor](https://github.com/godotengine/godot/releases/tag/4.7.2-stable) and [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (same as running from source). GUT is vendored in `addons/gut`. |
+| Auth (xUnit) | [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (`tests/AuthTests/AuthTests.csproj`, same as the game). |
+| Deno maze | [Deno](https://docs.deno.com/runtime/getting_started/installation/) 2.x (e.g. `winget install DenoLand.Deno` on Windows). No Godot required. |
 
-In addition to the source prerequisites above, install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) for the authentication test project. GUT is included in `addons/gut`; it does not need a separate download.
+Run all commands below from the **repository root** (the folder that contains `project.godot` and `deno.json`).
 
-From the repository root, import the project and build its C# code, then run the GUT suite:
+### 1. Godot GUT tests (`tests/test_*.gd`)
+
+These exercise the game in-engine (maze scene, enemy, trivia, triggers, `GameState`). In-maze GUT tests use **local DFS only**; they do not call the Gemini API.
+
+**One-time setup** (build C# so scenes compile):
 
 ```powershell
 godot --headless --editor --path . --quit
 dotnet build .\3311.csproj
+```
+
+**Run the full GUT suite (headless CLI)** — uses [`.gutconfig.json`](.gutconfig.json) (`res://tests/`, files named `test_*.gd`):
+
+```powershell
+godot --headless --path . -s res://addons/gut/gut_cmdln.gd
+```
+
+Equivalent if you prefer explicit flags:
+
+```powershell
 godot --headless --path . -s res://addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 ```
 
-Replace `godot` with the path to the Godot .NET executable if it is not on your PATH. On Windows, use the `_console.exe` executable for terminal output.
+Replace `godot` with the full path to the Godot **.NET** executable if it is not on your PATH. On Windows, prefer the `_console.exe` build so output appears in the terminal.
 
-Run the separate authentication tests with:
+**Run a single script** (example — maze tests only):
+
+```powershell
+godot --headless --path . -s res://addons/gut/gut_cmdln.gd -gselect test_maze_generation
+```
+
+**From the Godot editor:** open the project, ensure the **Gut** plugin is enabled, open the GUT bottom panel, confirm the test directory is `res://tests/`, and choose **Run All**.
+
+The maze generation script is the slowest suite (many random rebuilds).
+
+### 2. Authentication tests (`tests/AuthTests/`)
+
+Standalone xUnit project; no Godot or Deno.
 
 ```powershell
 dotnet test .\tests\AuthTests\AuthTests.csproj
 ```
 
-A fresh clone has no `.env` file. In that case, startup logs missing Supabase configuration and maze tests use the local fallback. If you have configured `.env`, initialization and the maze fixture test may contact your configured Supabase service; use an isolated copy without `.env` for an offline run. Do not commit credentials.
+Verbose output:
 
-**Known test issues:** `test_enemy.gd` currently fails to parse because its asynchronous maze helper calls are missing `await`, so GUT skips that file. `test_gate_builds_stairs_with_collision` currently fails because its expected collision node path is not found. Check the GUT output for skipped scripts as well as failed tests.
+```powershell
+dotnet test .\tests\AuthTests\AuthTests.csproj --verbosity normal
+```
+
+### 3. Deno maze tests (`tests/maze_generation.test.ts`)
+
+These test the same TypeScript maze code used by the Supabase edge function: `validatePath`, `completeMazeFromPath`, `localDfsDefinition`, and `attemptGeminiMaze`. Gemini layout is verified on the server with path + grid checks before the client ever receives a `generator: "gemini"` response.
+
+**Install Deno** if needed, then verify:
+
+```powershell
+deno --version
+```
+
+**Offline / CI (recommended default):** 12 tests run; the live Gemini test is **skipped** without an API key.
+
+```powershell
+deno task test:unit
+```
+
+Same as:
+
+```powershell
+deno test --allow-env tests/maze_generation.test.ts
+```
+
+**Full run including live Gemini:** create a root [`.env`](.env) with `GEMINI_API_KEY=...` (do not commit secrets), then:
+
+```powershell
+deno task test
+```
+
+Same as:
+
+```powershell
+deno test --allow-env --allow-net --env-file=.env tests/maze_generation.test.ts
+```
+
+| Flag | Purpose |
+| --- | --- |
+| `--allow-env` | Tests read and temporarily clear `GEMINI_API_KEY` |
+| `--allow-net` | Live Gemini HTTP request |
+| `--env-file=.env` | Loads `GEMINI_API_KEY` from the project root |
+
+Success looks like `ok | 13 passed | 0 failed` (full run) or `12 passed | 1 ignored` (unit run).
+
+### Suggested order for a full local check
+
+1. `dotnet test .\tests\AuthTests\AuthTests.csproj`
+2. `deno task test:unit`
+3. `dotnet build .\3311.csproj` then `godot --headless --path . -s res://addons/gut/gut_cmdln.gd`
+4. Optional: `deno task test` if you have a valid `GEMINI_API_KEY` in `.env`
+
+A fresh clone has no `.env`. The game logs missing Supabase configuration and uses local maze generation; GUT maze tests still pass offline. If you add `.env` for Deno or Supabase, keep credentials out of git.
 
 ### Licenses and Acknowledgements:
 
