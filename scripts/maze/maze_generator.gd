@@ -16,6 +16,7 @@ const FORK_TRIGGER_SCENE: PackedScene = preload("res://tscn/maze/fork_trigger.ts
 const EXIT_GATE_SCENE: PackedScene = preload("res://tscn/maze/exit_gate.tscn")
 const ENEMY_SCENE: PackedScene = preload("res://tscn/maze/enemy.tscn")
 const MAZE_TEXTURE: Texture2D = preload("res://scripts/ui/assets/images/maze-wall-texture.png")
+const LOADING_SPRITE_FRAMES: SpriteFrames = preload("res://scripts/ui/assets/Loading-screen-sprite/skeleton_wizard_walk.tres")
 # World units covered by one repeat of the texture.
 const TEXTURE_TILE_SIZE := 2.0
 
@@ -84,6 +85,7 @@ var grid: Array = []
 var _maze_load_id: int = 0
 var _loading_layer: CanvasLayer
 var _loading_label: Label
+var _loading_sprite: AnimatedSprite2D
 var _loading_dot_phase: int = 0
 var _loading_dot_timer: float = 0.0
 
@@ -174,6 +176,14 @@ func _ensure_maze_loading_overlay() -> void:
 	dim.color = Color(0, 0, 0, 0.35)
 	_loading_layer.add_child(dim)
 
+	var sprite_anchor := Control.new()
+	sprite_anchor.set_anchors_preset(Control.PRESET_CENTER)
+	_loading_layer.add_child(sprite_anchor)
+	_loading_sprite = AnimatedSprite2D.new()
+	_loading_sprite.sprite_frames = LOADING_SPRITE_FRAMES
+	_loading_sprite.position = Vector2(0, -100)
+	sprite_anchor.add_child(_loading_sprite)
+
 	_loading_label = Label.new()
 	_loading_label.set_anchors_preset(Control.PRESET_CENTER)
 	_loading_label.anchor_left = 0.5
@@ -201,12 +211,14 @@ func _show_maze_loading() -> void:
 	player.set_physics_process(false)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_loading_layer.show()
+	_loading_sprite.play("walk")
 	set_process(true)
 
 
 func _hide_maze_loading() -> void:
 	if _loading_layer != null:
 		_loading_layer.hide()
+		_loading_sprite.stop()
 	set_process(false)
 	player.visible = true
 	player.set_physics_process(true)

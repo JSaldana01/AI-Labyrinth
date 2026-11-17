@@ -37,7 +37,38 @@ const QUESTIONS: Array[Dictionary] = [
 	{"question": "What does CSE stand for?", "choices": ["Computer Science and Engineering", "Civil and Structural Engineering", "Chemical Science and Engineering", "Computational Systems Engineering"], "correct": 0},
 	{"question": "Which of the following is not an agile type of programming development process?", "choices": ["Iterative", "Waterfall", "Agile", "Scrum"], "correct": 1},
 	{"question": "Which of the following is a version control system?", "choices": ["Git", "Docker", "Kubernetes", "Jenkins"], "correct": 0},
-	{"question": "What is the minimum GPA required for CSE majors?", "choices": ["2.0", "2.25", "2.5", "2.35"], "correct": 1}
+	{"question": "What is the minimum GPA required for CSE majors?", "choices": ["2.0", "2.25", "2.5", "2.35"], "correct": 1},
+	{"question": "Which programming language is primarily used for iOS app development?", "choices": ["Swift", "Kotlin", "Java", "C#"], "correct": 0},
+	{"question": "Which programming language is primarily used for Android app development?", "choices": ["Swift", "Kotlin", "Java", "C#"], "correct": 1},
+	{"question": "Which programming language is primarily used for web development?", "choices": ["HTML", "Python", "C++", "Java"], "correct": 0},
+	{"question": "Which programming language is primarily used for backend web development?", "choices": ["HTML", "Python", "C++", "Java"], "correct": 1},
+	{"question": "Which programming language is primarily used for data science?", "choices": ["HTML", "Python", "C++", "Java"], "correct": 1},
+	{"question": "Which programming language is primarily used for machine learning?", "choices": ["HTML", "Python", "C++", "Java"], "correct": 1},
+	{"question": "Which programming language is primarily used for game development?", "choices": ["HTML", "Python", "C++", "Java"], "correct": 2},
+	{"question": "Which of the following is not an object oriented programming language?", "choices": ["Python", "C++", "Java", "HTML"], "correct": 3},
+	{"question": "Which of the following is a functional programming language?", "choices": ["Haskell", "C++", "Java", "HTML"], "correct": 0},
+	{"question": "Which of the following is a scripting language?", "choices": ["Python", "C++", "Java", "HTML"], "correct": 0},
+	{"question": "Which of the following is a markup language?", "choices": ["Python", "C++", "Java", "HTML"], "correct": 3},
+	{"question": "What is the name of website for the annual hackathon at UTA?", "choices": ["HackUTA.com", "Hackathon2026.com", "UTAHackathon.com", "BugHouseHackathon.com"], "correct": 0},
+	{"question": "Which of the following is a common programming paradigm?", "choices": ["Object-Oriented", "Functional", "Procedural", "All of the above"], "correct": 3},
+	{"question": "Which of the following is a common software development methodology?", "choices": ["Waterfall", "Agile", "Scrum", "All of the above"], "correct": 3},
+	{"question": "Which of the following is a common database management system?", "choices": ["MySQL", "PostgreSQL", "MongoDB", "All of the above"], "correct": 3},
+	{"question": "Which of the following is a common cloud service provider?", "choices": ["AWS", "Azure", "Google Cloud", "All of the above"], "correct": 3},
+	{"question": "University of Texas of Arlington shares the same university system as which school?", "choices": ["University of Texas at Austin", "University of Texas at Dallas", "University of Texas at San Antonio", "All of the above"], "correct": 3},
+	{"question": "How many libraries are available at the University of Texas at Arlington?", "choices": ["1", "2", "3", "4"], "correct": 2},
+	{"question": "What is the mascot of the University of Texas at Arlington?", "choices": ["Ranger", "Maverick", "Longhorn", "Aggie"], "correct": 1},
+	{"question": "In which county is the University of Texas at Arlington located?", "choices": ["Travis County", "Dallas County", "Tarrant County", "Harris County"], "correct": 2},
+	{"question": "What is not an official color of the University of Texas at Arlington?", "choices": ["Royal Blue", "Navy", "White", "Orange"], "correct": 1},
+	{"question": "About how many buildings are there at the University of Texas at Arlington?", "choices": ["50", "75", "100", "125"], "correct": 2},
+	{"question": "About how many acres is the University of Texas at Arlington campus?", "choices": ["170", "240", "330", "420"], "correct": 3},
+	{"question": "About how many students attend the University of Texas at Arlington?", "choices": ["20,000", "30,000", "40,000", "50,000"], "correct": 2},
+	{"question": "How many on-campus residence halls are there at the University of Texas at Arlington?", "choices": ["2", "4", "5", "6"], "correct": 2},
+	{"question": "What is the name of the program that allows you to get both undergraduate and graduate degree credits simulataneously at the University of Texas at Arlington?", "choices": ["Accelerated Degree Program", "Dual Degree Program", "Integrated Degree Program", "Fast Track Program"], "correct": 3},
+	{"question": "What is the name of the student newspaper at the University of Texas at Arlington?", "choices": ["The Shorthorn", "The Maverick", "The Ranger", "The Texan"], "correct": 0},
+	{"question": "What is the name of the student government association at the University of Texas at Arlington?", "choices": ["UTA Student Government", "Maverick Council", "The Shorthorn", "UTA Senate"], "correct": 0},
+	{"question": "What is the name of one of the libraries at the University of Texas at Arlington?", "choices": ["Central Library", "Arlington Library", "UTA Library", "Maverick Library"], "correct": 0},
+	{"question": "What is the name of the indoor sports arena at the University of Texas at Arlington?", "choices": ["College Park Center", "UTA Arena", "Maverick Stadium", "Arlington Sports Complex"], "correct": 0}
+
 ]
 
 var _popup: Control
@@ -77,7 +108,7 @@ func _on_choice_selected(is_correct: bool) -> void:
 	get_tree().paused = false
 	if is_correct:
 		GameState.add_key()
-		# Power-ups only matter when there is an enemy (not on Easy).
+		# Rewards only matter in modes with an enemy (not on Easy).
 		if GameState.get_setting("enemy_speed") > 0.0:
-			GameState.grant_random_power_up()
+			GameState.grant_random_reward()
 	answered.emit(is_correct)

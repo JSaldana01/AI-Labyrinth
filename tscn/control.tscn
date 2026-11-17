@@ -214,4 +214,4 @@ text = "Go to sign up instead"
 
 [node name="TestLoginButton" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer" unique_id=175695173]
 layout_mode = 2
-text = "Skip Login (Test)"
+text = "Skip Login"

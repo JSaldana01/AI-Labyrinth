@@ -11,14 +11,17 @@ signal difficulty_changed
 signal lives_changed(new_lives: int)
 signal game_over
 signal power_up_changed(power_up: int, time_left: float)
+signal reward_granted(reward: int)
 
 ## When true, maze_generator uses local DFS only (GUT / offline).
 var use_local_maze := false
 
 enum Difficulty { EASY, MEDIUM, HARD }
-enum PowerUp { NONE, GHOST, BLASTER }
+enum PowerUp { NONE, GHOST, BLASTER, SPEED }
+enum Reward { EXTRA_LIFE, SPEED, HINT, GHOST, BLASTER }
 
 const POWER_UP_DURATION := 10.0
+const SPEED_MULTIPLIER := 1.5
 
 # enemy_speed 0 means no enemy; lives 0 means no hearts are shown.
 const DIFFICULTY_SETTINGS := {
@@ -46,6 +49,7 @@ var lives: int = DIFFICULTY_SETTINGS[Difficulty.MEDIUM]["lives"]
 var is_game_over := false
 var active_power_up: int = PowerUp.NONE
 var power_up_time_left := 0.0
+var hints_available := 0
 # Mazes escaped this session, keyed by Difficulty.
 var mazes_completed := {Difficulty.EASY: 0, Difficulty.MEDIUM: 0, Difficulty.HARD: 0}
 # Set once the exit is used, so repeated stair contacts in the same frame can't
@@ -70,6 +74,7 @@ func set_difficulty(new_difficulty: int) -> void:
 	keys_collected = 0
 	lives = DIFFICULTY_SETTINGS[difficulty]["lives"]
 	is_game_over = false
+	hints_available = 0
 	_exiting = false
 	clear_power_up()
 	difficulty_changed.emit()
@@ -116,10 +121,44 @@ func reset_keys() -> void:
 
 
 # A new power-up replaces whatever is active and restarts the timer.
-func grant_random_power_up() -> void:
-	active_power_up = [PowerUp.GHOST, PowerUp.BLASTER].pick_random()
+func grant_random_reward() -> void:
+	var rewards: Array[int] = [
+		Reward.EXTRA_LIFE,
+		Reward.SPEED,
+		Reward.HINT,
+		Reward.GHOST,
+		Reward.BLASTER,
+	]
+	_grant_reward(rewards.pick_random())
+
+
+func _grant_reward(reward: int) -> void:
+	match reward:
+		Reward.EXTRA_LIFE:
+			lives += 1
+			lives_changed.emit(lives)
+		Reward.SPEED:
+			_start_power_up(PowerUp.SPEED)
+		Reward.HINT:
+			hints_available += 1
+		Reward.GHOST:
+			_start_power_up(PowerUp.GHOST)
+		Reward.BLASTER:
+			_start_power_up(PowerUp.BLASTER)
+	reward_granted.emit(reward)
+
+
+func _start_power_up(power_up: int) -> void:
+	active_power_up = power_up
 	power_up_time_left = POWER_UP_DURATION
 	power_up_changed.emit(active_power_up, power_up_time_left)
+
+
+func use_hint() -> bool:
+	if hints_available <= 0:
+		return false
+	hints_available -= 1
+	return true
 
 
 func clear_power_up() -> void:
@@ -136,6 +175,10 @@ func is_ghost() -> bool:
 
 func has_blaster() -> bool:
 	return active_power_up == PowerUp.BLASTER
+
+
+func has_speed_boost() -> bool:
+	return active_power_up == PowerUp.SPEED
 
 
 func has_enough_keys() -> bool:

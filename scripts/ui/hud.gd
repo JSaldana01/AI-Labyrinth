@@ -19,6 +19,7 @@ func _ready() -> void:
 	GameState.exit_denied.connect(_on_exit_denied)
 	GameState.level_completed.connect(_on_level_completed)
 	GameState.lives_changed.connect(_on_lives_changed)
+	GameState.reward_granted.connect(_on_reward_granted)
 	message_timer.timeout.connect(_on_message_timer_timeout)
 	message_label.hide()
 	_on_key_count_changed(GameState.keys_collected)
@@ -59,6 +60,20 @@ func _on_exit_denied(keys_needed: int) -> void:
 
 func _on_level_completed() -> void:
 	_show_message("You escaped the maze! A new maze awaits...")
+
+
+func _on_reward_granted(reward: int) -> void:
+	match reward:
+		GameState.Reward.EXTRA_LIFE:
+			_show_message("Bonus heart!")
+		GameState.Reward.SPEED:
+			_show_message("Speed boost!")
+		GameState.Reward.HINT:
+			_show_message("Hint earned! Use it on a future question.")
+		GameState.Reward.GHOST:
+			_show_message("Ghost mode!")
+		GameState.Reward.BLASTER:
+			_show_message("Blaster mode!")
 
 
 func _show_message(text: String) -> void:

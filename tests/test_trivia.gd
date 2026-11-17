@@ -1,9 +1,9 @@
 extends GutTest
 
-## Tests for the trivia question data and the TriviaManager autoload logic.
-## The popup UI is not opened here; answers are fed straight to the handler.
+## Tests for trivia question data, the manager, and the popup.
 
 const D = preload("res://scripts/game/game_state.gd").Difficulty
+const POPUP_SCENE: PackedScene = preload("res://tscn/trivia/trivia_popup.tscn")
 
 
 func before_each() -> void:
@@ -71,12 +71,74 @@ func test_correct_answer_adds_a_key_and_reports_true() -> void:
 
 func test_wrong_answer_adds_no_key_and_reports_false() -> void:
 	watch_signals(TriviaManager)
+	watch_signals(GameState)
 	TriviaManager._on_choice_selected(false)
 	assert_eq(GameState.keys_collected, 0)
 	assert_signal_emitted_with_parameters(TriviaManager, "answered", [false])
+	assert_signal_not_emitted(GameState, "reward_granted")
+
+
+func test_wrong_answers_grant_no_reward_on_medium_or_hard() -> void:
+	watch_signals(GameState)
+	for level in [D.MEDIUM, D.HARD]:
+		GameState.set_difficulty(level)
+		TriviaManager._on_choice_selected(false)
+		assert_eq(GameState.keys_collected, 0)
+	assert_signal_not_emitted(GameState, "reward_granted")
+
+
+func test_correct_answers_grant_rewards_only_on_medium_and_hard() -> void:
+	watch_signals(GameState)
+	for level in [D.MEDIUM, D.HARD]:
+		GameState.set_difficulty(level)
+		TriviaManager._on_choice_selected(true)
+	assert_signal_emit_count(GameState, "reward_granted", 2)
+
+	GameState.set_difficulty(D.EASY)
+	TriviaManager._on_choice_selected(true)
+	assert_signal_emit_count(GameState, "reward_granted", 2)
 
 
 func test_answering_unpauses_the_game() -> void:
 	get_tree().paused = true
 	TriviaManager._on_choice_selected(false)
 	assert_false(get_tree().paused)
+
+
+func test_hint_removes_one_wrong_choice_and_next_question_restores_choices() -> void:
+	var popup: Control = POPUP_SCENE.instantiate()
+	add_child_autofree(popup)
+	var question := {
+		"question": "Test question",
+		"choices": ["A", "B", "C", "D"],
+		"correct": 0,
+	}
+
+	for correct_index in range(4):
+		question["correct"] = correct_index
+		GameState._grant_reward(GameState.Reward.HINT)
+		GameState._grant_reward(GameState.Reward.HINT)
+		popup.open(question)
+		assert_true(popup.hint_button.visible)
+		popup.hint_button.pressed.emit()
+
+		assert_eq(GameState.hints_available, 1)
+		assert_false(popup.hint_button.visible)
+		assert_false(popup.choice_buttons[correct_index].disabled)
+		var removed := 0
+		for button in popup.choice_buttons:
+			if button.disabled:
+				removed += 1
+		assert_eq(removed, 1)
+
+		popup.open(question)
+		assert_true(popup.hint_button.visible)
+		for i in range(popup.choice_buttons.size()):
+			assert_false(popup.choice_buttons[i].disabled)
+			assert_eq(popup.choice_buttons[i].text, "%d. %s" % [i + 1, question["choices"][i]])
+		popup.hint_button.pressed.emit()
+		assert_eq(GameState.hints_available, 0)
+
+	popup.open(question)
+	assert_false(popup.hint_button.visible)
+	popup.choice_buttons[question["correct"]].pressed.emit()

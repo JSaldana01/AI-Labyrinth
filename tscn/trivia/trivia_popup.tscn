@@ -65,3 +65,7 @@ text = "3."
 [node name="Choice4" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=213188493]
 layout_mode = 2
 text = "4."
+
+[node name="HintButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Use Hint"
