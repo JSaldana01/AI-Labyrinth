@@ -19,6 +19,52 @@ Because this game is built with **Godot 4 (.NET / C#)**, ensure you have the **.
 3. **Extract the entire `.zip` folder** to a location on your computer. _(Do not run the `.exe` directly from inside the unextracted `.zip` preview window!)_
 4. Open the extracted folder and double-click the `.exe` file to start the game.
 
+### Run from source
+
+1. Install the [Godot 4.7.2 .NET editor](https://github.com/godotengine/godot/releases/tag/4.7.2-stable) and the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+2. Clone this repository and import `project.godot` in Godot.
+3. Build the C# project in Godot, then press **F5** to run the game.
+4. Choose **Skip Login** to play without an account. Without Supabase configuration, the game logs missing configuration and falls back to local maze generation.
+
+## Tests
+
+The counts below are test cases, including individual xUnit theory inputs.
+
+| File | Tests | Type | What it covers |
+| --- | ---: | --- | --- |
+| [test_game_state.gd](tests/test_game_state.gd) | 24 | Unit and state-based | Difficulty, keys, hearts, game over, exit handling, completion counts, rewards, speed boost timing and movement, and hint persistence. |
+| [test_maze_generation.gd](tests/test_maze_generation.gd) | 22 | Integration and randomized property checks | Maze connectivity, walls, coordinates, pathfinding, trigger placement, exit and roof geometry, loading animation, and applying a maze fixture. Several checks repeat across generated mazes. |
+| [test_enemy.gd](tests/test_enemy.gd) | 9 | Integration and behavioral | Enemy spawning, difficulty speeds, pause and game-over behavior, and chasing through open passages. See the known test issues below. |
+| [test_trivia.gd](tests/test_trivia.gd) | 11 | Unit and interaction | Question data, shuffle bag, answers and rewards, and using hints in the trivia popup. |
+| [test_triggers_and_exit.gd](tests/test_triggers_and_exit.gd) | 9 | Component and interaction | Key triggers, answer responses, exit requirements, player proximity, and staircase collision. See the known test issues below. |
+| [AuthValidatorTests.cs](tests/AuthTests/AuthValidatorTests.cs) | 29 | Unit | Email and password validation, error messages, whitespace, length limits, control characters, injection-style inputs, large inputs, and Unicode passwords. |
+
+`MazeTests.cs` is not present in this repository; no separate C# maze test suite is included in these counts.
+
+### Running the tests
+
+In addition to the source prerequisites above, install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) for the authentication test project. GUT is included in `addons/gut`; it does not need a separate download.
+
+From the repository root, import the project and build its C# code, then run the GUT suite:
+
+```powershell
+godot --headless --editor --path . --quit
+dotnet build .\3311.csproj
+godot --headless --path . -s res://addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
+```
+
+Replace `godot` with the path to the Godot .NET executable if it is not on your PATH. On Windows, use the `_console.exe` executable for terminal output.
+
+Run the separate authentication tests with:
+
+```powershell
+dotnet test .\tests\AuthTests\AuthTests.csproj
+```
+
+A fresh clone has no `.env` file. In that case, startup logs missing Supabase configuration and maze tests use the local fallback. If you have configured `.env`, initialization and the maze fixture test may contact your configured Supabase service; use an isolated copy without `.env` for an offline run. Do not commit credentials.
+
+**Known test issues:** `test_enemy.gd` currently fails to parse because its asynchronous maze helper calls are missing `await`, so GUT skips that file. `test_gate_builds_stairs_with_collision` currently fails because its expected collision node path is not found. Check the GUT output for skipped scripts as well as failed tests.
+
 ### Licenses and Acknowledgements:
 
 Pixelated heart: https://www.citypng.com/png-download/29976
